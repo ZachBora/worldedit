@@ -1,24 +1,27 @@
-// $Id$
 /*
- * WorldEdit
- * Copyright (C) 2010 sk89q <http://www.sk89q.com> and contributors
+ * WorldEdit, a Minecraft world manipulation toolkit
+ * Copyright (C) sk89q <http://www.sk89q.com>
+ * Copyright (C) WorldEdit team and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package com.sk89q.worldedit.blocks;
 
+import com.sk89q.util.StringUtil;
+
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,14 +29,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.sk89q.util.StringUtil;
-
 /**
- * ItemType types.
- *
- * @author sk89q
+ * An enum of types of items.
  */
 public enum ItemType {
+
     // Blocks
     AIR(BlockID.AIR, "Air", "air"),
     STONE(BlockID.STONE, "Stone", "stone", "rock"),
@@ -88,7 +88,7 @@ public enum ItemType {
     TORCH(BlockID.TORCH, "Torch", "torch", "light", "candle"),
     FIRE(BlockID.FIRE, "Fire", "fire", "flame", "flames"),
     MOB_SPAWNER(BlockID.MOB_SPAWNER, "Mob spawner", "mobspawner", "spawner"),
-    WOODEN_STAIRS(BlockID.WOODEN_STAIRS, "Wooden stairs", "woodstair", "woodstairs", "woodenstair", "woodenstairs"),
+    WOODEN_STAIRS(BlockID.OAK_WOOD_STAIRS, "Wooden stairs", "woodstair", "woodstairs", "woodenstair", "woodenstairs"),
     CHEST(BlockID.CHEST, "Chest", "chest", "storage", "storagechest"),
     REDSTONE_WIRE(BlockID.REDSTONE_WIRE, "Redstone wire", "redstone", "redstoneblock"),
     DIAMOND_ORE(BlockID.DIAMOND_ORE, "Diamond ore", "diamondore"),
@@ -130,7 +130,8 @@ public enum ItemType {
     CAKE(BlockID.CAKE_BLOCK, "Cake", "cake", "cakeblock"),
     REDSTONE_REPEATER_OFF(BlockID.REDSTONE_REPEATER_OFF, "Redstone repeater (off)", "diodeoff", "redstonerepeater", "repeateroff", "delayeroff"),
     REDSTONE_REPEATER_ON(BlockID.REDSTONE_REPEATER_ON, "Redstone repeater (on)", "diodeon", "redstonerepeateron", "repeateron", "delayeron"),
-    LOCKED_CHEST(BlockID.LOCKED_CHEST, "Locked chest", "lockedchest", "steveco", "supplycrate", "valveneedstoworkonep3nottf2kthx"),
+    @Deprecated LOCKED_CHEST(BlockID.LOCKED_CHEST, "thisblockisinvalidusedstainedglassinstead"),
+    STAINED_GLASS(BlockID.STAINED_GLASS, "Stained Glass", "stainedglass"),
     TRAP_DOOR(BlockID.TRAP_DOOR, "Trap door", "trapdoor", "hatch", "floordoor"),
     SILVERFISH_BLOCK(BlockID.SILVERFISH_BLOCK, "Silverfish block", "silverfish", "silver"),
     STONE_BRICK(BlockID.STONE_BRICK, "Stone brick", "stonebrick", "sbrick", "smoothstonebrick"),
@@ -145,7 +146,7 @@ public enum ItemType {
     FENCE_GATE(BlockID.FENCE_GATE, "Fence gate", "fencegate", "gate"),
     BRICK_STAIRS(BlockID.BRICK_STAIRS, "Brick stairs", "brickstairs", "bricksteps"),
     STONE_BRICK_STAIRS(BlockID.STONE_BRICK_STAIRS, "Stone brick stairs", "stonebrickstairs", "smoothstonebrickstairs"),
-    MYCELIUM(BlockID.MYCELIUM, "Mycelium", "fungus", "mycel"),
+    MYCELIUM(BlockID.MYCELIUM, "Mycelium", "mycelium", "fungus", "mycel"),
     LILY_PAD(BlockID.LILY_PAD, "Lily pad", "lilypad", "waterlily"),
     NETHER_BRICK(BlockID.NETHER_BRICK, "Nether brick", "netherbrick"),
     NETHER_BRICK_FENCE(BlockID.NETHER_BRICK_FENCE, "Nether brick fence", "netherbrickfence", "netherfence"),
@@ -175,25 +176,38 @@ public enum ItemType {
     COMMAND_BLOCK(BlockID.COMMAND_BLOCK, "Command block", "commandblock", "cmdblock", "command", "cmd"),
     BEACON(BlockID.BEACON, "Beacon", "beacon", "beaconblock"),
     COBBLESTONE_WALL(BlockID.COBBLESTONE_WALL, "Cobblestone wall", "cobblestonewall", "cobblewall"),
-    FLOWER_POT_BLOCK(BlockID.FLOWER_POT, "Flower pot", "flowerpot", "plantpot", "pot", "flowerpotblock"),
-    CARROTS_BLOCK(BlockID.CARROTS, "Carrots", "carrots", "carrotsplant", "carrotsblock"),
-    POTATOES_BLOCK(BlockID.POTATOES, "Potatoes", "patatoes", "potatoesblock"),
+    FLOWER_POT_BLOCK(BlockID.FLOWER_POT, "Flower pot", "flowerpot", "plantpot", "pot"),
+    CARROTS(BlockID.CARROTS, "Carrots", "carrots", "carrotsplant", "carrotsblock"),
+    POTATOES(BlockID.POTATOES, "Potatoes", "potatoes", "potatoesblock"),
     WOODEN_BUTTON(BlockID.WOODEN_BUTTON, "Wooden button", "woodbutton", "woodenbutton"),
-    HEAD_BLOCK(BlockID.HEAD, "Head", "head", "headmount", "mount", "headblock", "mountblock"),
+    HEAD_BLOCK(BlockID.HEAD, "Head", "head", "skull"),
     ANVIL(BlockID.ANVIL, "Anvil", "anvil", "blacksmith"),
     TRAPPED_CHEST(BlockID.TRAPPED_CHEST, "Trapped Chest", "trappedchest", "redstonechest"),
     PRESSURE_PLATE_LIGHT(BlockID.PRESSURE_PLATE_LIGHT, "Weighted Pressure Plate (Light)", "lightpressureplate"),
     PRESSURE_PLATE_HEAVY(BlockID.PRESSURE_PLATE_HEAVY, "Weighted Pressure Plate (Heavy)", "heavypressureplate"),
     COMPARATOR_OFF(BlockID.COMPARATOR_OFF, "Redstone Comparator (inactive)", "redstonecomparator", "comparator"),
     COMPARATOR_ON(BlockID.COMPARATOR_ON, "Redstone Comparator (active)", "redstonecomparatoron", "comparatoron"),
-    DAYLIGHT_SENSOR(BlockID.DAYLIGHT_SENSOR, "Daylight Sesnor", "daylightsensor", "lightsensor"),
+    DAYLIGHT_SENSOR(BlockID.DAYLIGHT_SENSOR, "Daylight Sensor", "daylightsensor", "lightsensor", "daylightdetector"),
     REDSTONE_BLOCK(BlockID.REDSTONE_BLOCK, "Block of Redstone", "redstoneblock", "blockofredstone"),
     QUARTZ_ORE(BlockID.QUARTZ_ORE, "Nether Quartz Ore", "quartzore", "netherquartzore"),
     HOPPER(BlockID.HOPPER, "Hopper", "hopper"),
-    QUARTZ_BLOCK(BlockID.QUARTZ_BLOCK, "Block of Quartz", "quartzblock"),
+    QUARTZ_BLOCK(BlockID.QUARTZ_BLOCK, "Block of Quartz", "quartzblock", "quartz"),
     QUARTZ_STAIRS(BlockID.QUARTZ_STAIRS, "Quartz Stairs", "quartzstairs"),
     ACTIVATOR_RAIL(BlockID.ACTIVATOR_RAIL, "Activator Rail", "activatorrail", "tntrail", "activatortrack"),
     DROPPER(BlockID.DROPPER, "Dropper", "dropper"),
+    STAINED_CLAY(BlockID.STAINED_CLAY, "Stained Clay", "stainedclay", "stainedhardenedclay"),
+    STAINED_GLASS_PANE(BlockID.STAINED_GLASS_PANE, "Stained Glass Pane", "stainedglasspane"),
+    LEAVES2(BlockID.LEAVES2, "Leaves", "leaves2", "acacialeaves", "darkoakleaves"),
+    LOG2(BlockID.LOG2, "Log", "log2", "acacia", "darkoak"),
+    ACACIA_STAIRS(BlockID.ACACIA_STAIRS, "Acacia Wood Stairs", "acaciawoodstairs", "acaciastairs"),
+    DARK_OAK_STAIRS(BlockID.DARK_OAK_STAIRS, "Dark Oak Wood Stairs", "darkoakwoodstairs", "darkoakstairs"),
+    HAY_BLOCK(BlockID.HAY_BLOCK, "Hay Block", "hayblock", "haybale", "wheatbale"),
+    CARPET(BlockID.CARPET, "Carpet", "carpet"),
+    HARDENED_CLAY(BlockID.HARDENED_CLAY, "Hardened Clay", "hardenedclay", "hardclay"),
+    COAL_BLOCK(BlockID.COAL_BLOCK, "Block of Coal", "coalblock", "blockofcoal"),
+    PACKED_ICE(BlockID.PACKED_ICE, "Packed Ice", "packedice", "hardice"),
+    DOUBLE_PLANT(BlockID.DOUBLE_PLANT, "Large Flowers", "largeflowers", "doubleflowers"),
+
 
     // Items
     IRON_SHOVEL(ItemID.IRON_SHOVEL, "Iron shovel", "ironshovel"),
@@ -337,7 +351,7 @@ public enum ItemType {
     POISONOUS_POTATO(ItemID.POISONOUS_POTATO, "Poisonous potato", "poisonpotato", "poisonouspotato"),
     BLANK_MAP(ItemID.BLANK_MAP, "Blank map", "blankmap", "emptymap"),
     GOLDEN_CARROT(ItemID.GOLDEN_CARROT, "Golden carrot", "goldencarrot", "goldcarrot"),
-    HEAD(ItemID.HEAD, "Head",  "head", "headmount", "mount"),
+    HEAD(ItemID.HEAD, "Head", "skull", "head", "headmount", "mount"),
     CARROT_ON_A_STICK(ItemID.CARROT_ON_A_STICK, "Carrot on a stick", "carrotonastick", "carrotonstick", "stickcarrot", "carrotstick"),
     NETHER_STAR(ItemID.NETHER_STAR, "Nether star", "netherstar", "starnether"),
     PUMPKIN_PIE(ItemID.PUMPKIN_PIE, "Pumpkin pie", "pumpkinpie"),
@@ -349,6 +363,12 @@ public enum ItemType {
     NETHER_QUARTZ(ItemID.NETHER_QUARTZ, "Nether Quartz", "netherquartz", "quartz"),
     TNT_MINECART(ItemID.TNT_MINECART, "Minecart with TNT", "minecraftwithtnt", "tntminecart", "minecarttnt"),
     HOPPER_MINECART(ItemID.HOPPER_MINECART, "Minecart with Hopper", "minecraftwithhopper", "hopperminecart", "minecarthopper"),
+    HORSE_ARMOR_IRON(ItemID.HORSE_ARMOR_IRON, "Iron Horse Armor", "ironhorsearmor", "ironbarding"),
+    HORSE_ARMOR_GOLD(ItemID.HORSE_ARMOR_GOLD, "Gold Horse Armor", "goldhorsearmor", "goldbarding"),
+    HORSE_ARMOR_DIAMOND(ItemID.HORSE_ARMOR_DIAMOND, "Diamond Horse Armor", "diamondhorsearmor", "diamondbarding"),
+    LEAD(ItemID.LEAD, "Lead", "lead", "leash"),
+    NAME_TAG(ItemID.NAME_TAG, "Name Tag", "nametag"),
+    COMMAND_BLOCK_MINECART(ItemID.COMMAND_BLOCK_MINECART, "Minecart with Command Block"),
     DISC_13(ItemID.DISC_13, "Music Disc - 13", "disc_13"),
     DISC_CAT(ItemID.DISC_CAT, "Music Disc - Cat", "disc_cat"),
     DISC_BLOCKS(ItemID.DISC_BLOCKS, "Music Disc - blocks", "disc_blocks"),
@@ -392,8 +412,9 @@ public enum ItemType {
     /**
      * Construct the type.
      *
-     * @param id
-     * @param name
+     * @param id the type ID of the item
+     * @param name the name of the item
+     * @param lookupKey a name to refer to the item type by
      */
     ItemType(int id, String name, String lookupKey) {
         this.id = id;
@@ -404,8 +425,9 @@ public enum ItemType {
     /**
      * Construct the type.
      *
-     * @param id
-     * @param name
+     * @param id the type ID of the item
+     * @param name the name of the item
+     * @param lookupKeys a list of names to refer to the item type by
      */
     ItemType(int id, String name, String... lookupKeys) {
         this.id = id;
@@ -416,9 +438,10 @@ public enum ItemType {
     /**
      * Return type from ID. May return null.
      *
-     * @param id
-     * @return
+     * @param id the type ID of the item
+     * @return an item type or null
      */
+    @Nullable
     public static ItemType fromID(int id) {
         return ids.get(id);
     }
@@ -426,8 +449,10 @@ public enum ItemType {
     /**
      * Get a name for the item.
      *
-     * @param id
-     * @return
+     * <p>If the item type is not null, the numeric ID will be returned.</p>
+     *
+     * @param id the type ID of the item
+     * @return a name for the item
      */
     public static String toName(int id) {
         ItemType type = ids.get(id);
@@ -441,8 +466,10 @@ public enum ItemType {
     /**
      * Get a name for a held item.
      *
-     * @param id
-     * @return
+     * <p>If the item type is not null, the numeric ID will be returned.</p>
+     *
+     * @param id the type ID of the item
+     * @return the name of the item
      */
     public static String toHeldName(int id) {
         if (id == 0) {
@@ -459,9 +486,10 @@ public enum ItemType {
     /**
      * Return type from name. May return null.
      *
-     * @param name
-     * @return
+     * @param name the name
+     * @return the type or null
      */
+    @Nullable
     public static ItemType lookup(String name) {
         return lookup(name, true);
     }
@@ -469,10 +497,11 @@ public enum ItemType {
     /**
      * Return type from name. May return null.
      *
-     * @param name
-     * @param fuzzy
-     * @return
+     * @param name the name
+     * @param fuzzy true to do a fuzzy string search
+     * @return the type or null
      */
+    @Nullable
     public static ItemType lookup(String name, boolean fuzzy) {
         try {
             return fromID(Integer.parseInt(name));
@@ -484,7 +513,7 @@ public enum ItemType {
     /**
      * Get item numeric ID.
      *
-     * @return
+     * @return the type ID of this item
      */
     public int getID() {
         return id;
@@ -493,7 +522,7 @@ public enum ItemType {
     /**
      * Get user-friendly item name.
      *
-     * @return
+     * @return a name of this item
      */
     public String getName() {
         return name;
@@ -502,7 +531,7 @@ public enum ItemType {
     /**
      * Get a list of aliases.
      *
-     * @return
+     * @return a list of aliases
      */
     public String[] getAliases() {
         return lookupKeys;
@@ -579,6 +608,10 @@ public enum ItemType {
         shouldNotStack.add(ItemID.ENCHANTED_BOOK);
         shouldNotStack.add(ItemID.TNT_MINECART);
         shouldNotStack.add(ItemID.HOPPER_MINECART);
+        shouldNotStack.add(ItemID.HORSE_ARMOR_IRON);
+        shouldNotStack.add(ItemID.HORSE_ARMOR_GOLD);
+        shouldNotStack.add(ItemID.HORSE_ARMOR_DIAMOND);
+        shouldNotStack.add(ItemID.COMMAND_BLOCK_MINECART);
         shouldNotStack.add(ItemID.DISC_13);
         shouldNotStack.add(ItemID.DISC_CAT);
         shouldNotStack.add(ItemID.DISC_BLOCKS);
@@ -596,8 +629,8 @@ public enum ItemType {
     /**
      * Returns true if an item should not be stacked.
      *
-     * @param id
-     * @return
+     * @param id the type ID of the item
+     * @return true if the item should not stack
      */
     public static boolean shouldNotStack(int id) {
         return shouldNotStack.contains(id);
@@ -605,13 +638,16 @@ public enum ItemType {
 
     private static final Set<Integer> usesDamageValue = new HashSet<Integer>();
     static {
+        usesDamageValue.add(BlockID.DIRT);
         usesDamageValue.add(BlockID.WOOD);
         usesDamageValue.add(BlockID.SAPLING);
+        usesDamageValue.add(BlockID.SAND);
         usesDamageValue.add(BlockID.LOG);
         usesDamageValue.add(BlockID.LEAVES);
         usesDamageValue.add(BlockID.SANDSTONE);
         usesDamageValue.add(BlockID.LONG_GRASS);
         usesDamageValue.add(BlockID.CLOTH);
+        usesDamageValue.add(BlockID.RED_FLOWER);
         usesDamageValue.add(BlockID.DOUBLE_STEP);
         usesDamageValue.add(BlockID.STEP);
         usesDamageValue.add(BlockID.SILVERFISH_BLOCK);
@@ -623,6 +659,8 @@ public enum ItemType {
         usesDamageValue.add(BlockID.COBBLESTONE_WALL);
         usesDamageValue.add(BlockID.ANVIL);
         usesDamageValue.add(BlockID.QUARTZ_BLOCK);
+        usesDamageValue.add(BlockID.STAINED_CLAY);
+        usesDamageValue.add(BlockID.CARPET);
 
         usesDamageValue.add(ItemID.COAL);
         usesDamageValue.add(ItemID.INK_SACK);
@@ -631,16 +669,19 @@ public enum ItemType {
         usesDamageValue.add(ItemID.MAP);
         usesDamageValue.add(ItemID.HEAD);
         usesDamageValue.add(ItemID.GOLD_APPLE);
+        usesDamageValue.add(ItemID.RAW_FISH);
+        usesDamageValue.add(ItemID.COOKED_FISH);
     }
 
     /**
      * Returns true if an item uses its damage value for something
      * other than damage.
      *
-     * @param id
-     * @return
+     * @param id the type ID of the item
+     * @return true if the item uses its damage value
      */
     public static boolean usesDamageValue(int id) {
         return usesDamageValue.contains(id);
     }
+
 }

@@ -1,37 +1,23 @@
-package com.sk89q.jnbt;
-
 /*
- * JNBT License
- * 
- * Copyright (c) 2010 Graham Edgecombe
- * All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- * 
- *     * Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
- *       
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *       
- *     * Neither the name of the JNBT team nor the names of its
- *       contributors may be used to endorse or promote products derived from
- *       this software without specific prior written permission.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE. 
+ * WorldEdit, a Minecraft world manipulation toolkit
+ * Copyright (C) sk89q <http://www.sk89q.com>
+ * Copyright (C) WorldEdit team and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+package com.sk89q.jnbt;
 
 import java.io.Closeable;
 import java.io.DataInputStream;
@@ -41,52 +27,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.sk89q.jnbt.ByteArrayTag;
-import com.sk89q.jnbt.ByteTag;
-import com.sk89q.jnbt.CompoundTag;
-import com.sk89q.jnbt.DoubleTag;
-import com.sk89q.jnbt.EndTag;
-import com.sk89q.jnbt.FloatTag;
-import com.sk89q.jnbt.IntTag;
-import com.sk89q.jnbt.ListTag;
-import com.sk89q.jnbt.LongTag;
-import com.sk89q.jnbt.NBTConstants;
-import com.sk89q.jnbt.NBTUtils;
-import com.sk89q.jnbt.ShortTag;
-import com.sk89q.jnbt.StringTag;
-import com.sk89q.jnbt.Tag;
 
 /**
- * <p>
  * This class reads <strong>NBT</strong>, or <strong>Named Binary Tag</strong>
- * streams, and produces an object graph of subclasses of the <code>Tag</code>
+ * streams, and produces an object graph of subclasses of the {@code Tag}
  * object.
- * </p>
  * 
- * <p>
- * The NBT format was created by Markus Persson, and the specification may be
+ * <p>The NBT format was created by Markus Persson, and the specification may be
  * found at <a href="http://www.minecraft.net/docs/NBT.txt">
- * http://www.minecraft.net/docs/NBT.txt</a>.
- * </p>
- * 
- * @author Graham Edgecombe
- * 
+ * http://www.minecraft.net/docs/NBT.txt</a>.</p>
  */
 public final class NBTInputStream implements Closeable {
 
-    /**
-     * The data input stream.
-     */
     private final DataInputStream is;
 
     /**
-     * Creates a new <code>NBTInputStream</code>, which will source its data
+     * Creates a new {@code NBTInputStream}, which will source its data
      * from the specified input stream.
      * 
-     * @param is
-     *            The input stream.
-     * @throws IOException
-     *             if an I/O error occurs.
+     * @param is the input stream
+     * @throws IOException if an I/O error occurs
      */
     public NBTInputStream(InputStream is) throws IOException {
         this.is = new DataInputStream(is);
@@ -96,8 +56,7 @@ public final class NBTInputStream implements Closeable {
      * Reads an NBT tag from the stream.
      * 
      * @return The tag that was read.
-     * @throws IOException
-     *             if an I/O error occurs.
+     * @throws IOException if an I/O error occurs.
      */
     public Tag readTag() throws IOException {
         return readTag(0);
@@ -106,11 +65,9 @@ public final class NBTInputStream implements Closeable {
     /**
      * Reads an NBT from the stream.
      * 
-     * @param depth
-     *            The depth of this tag.
+     * @param depth the depth of this tag
      * @return The tag that was read.
-     * @throws IOException
-     *             if an I/O error occurs.
+     * @throws IOException if an I/O error occurs.
      */
     private Tag readTag(int depth) throws IOException {
         int type = is.readByte() & 0xFF;
@@ -131,18 +88,13 @@ public final class NBTInputStream implements Closeable {
     /**
      * Reads the payload of a tag, given the name and type.
      * 
-     * @param type
-     *            The type.
-     * @param name
-     *            The name.
-     * @param depth
-     *            The depth.
-     * @return The tag.
-     * @throws IOException
-     *             if an I/O error occurs.
+     * @param type the type
+     * @param name the name
+     * @param depth the depth
+     * @return the tag
+     * @throws IOException if an I/O error occurs.
      */
-    private Tag readTagPayload(int type, String name, int depth)
-            throws IOException {
+    private Tag readTagPayload(int type, String name, int depth) throws IOException {
         switch (type) {
         case NBTConstants.TYPE_END:
             if (depth == 0) {
@@ -211,6 +163,7 @@ public final class NBTInputStream implements Closeable {
         }
     }
 
+    @Override
     public void close() throws IOException {
         is.close();
     }

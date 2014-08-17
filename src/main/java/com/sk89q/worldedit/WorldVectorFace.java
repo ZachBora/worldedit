@@ -1,93 +1,53 @@
-// $Id$
 /*
- * WorldEdit
- * Copyright (C) 2010 sk89q <http://www.sk89q.com> and contributors
+ * WorldEdit, a Minecraft world manipulation toolkit
+ * Copyright (C) sk89q <http://www.sk89q.com>
+ * Copyright (C) WorldEdit team and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package com.sk89q.worldedit;
 
 /**
- * A WorldVector that emphasizes one side of the block
+ * @deprecated Use {@link com.sk89q.worldedit.util.Location} wherever possible
  */
+@SuppressWarnings("deprecation")
+@Deprecated
 public class WorldVectorFace extends WorldVector {
-    /**
-     * Represents the side.
-     */
+
     private VectorFace face;
 
-    /**
-     * Construct the Vector object.
-     *
-     * @param world
-     * @param x
-     * @param y
-     * @param z
-     * @param face
-     */
     public WorldVectorFace(LocalWorld world, double x, double y, double z, VectorFace face) {
         super(world, x, y, z);
         this.face = face;
     }
 
-    /**
-     * Construct the Vector object.
-     *
-     * @param world
-     * @param x
-     * @param y
-     * @param z
-     * @param face
-     */
     public WorldVectorFace(LocalWorld world, int x, int y, int z, VectorFace face) {
         super(world, x, y, z);
         this.face = face;
     }
 
-    /**
-     * Construct the Vector object.
-     *
-     * @param world
-     * @param x
-     * @param y
-     * @param z
-     * @param face
-     */
     public WorldVectorFace(LocalWorld world, float x, float y, float z, VectorFace face) {
         super(world, x, y, z);
         this.face = face;
     }
 
-    /**
-     * Construct the Vector object.
-     *
-     * @param world
-     * @param pt
-     * @param face
-     */
     public WorldVectorFace(LocalWorld world, Vector pt, VectorFace face) {
         super(world, pt);
         this.face = face;
     }
 
-    /**
-     * Construct the Vector object.
-     * 
-     * @param world
-     * @param face
-     */
     public WorldVectorFace(LocalWorld world, VectorFace face) {
         super(world);
         this.face = face;
@@ -96,7 +56,7 @@ public class WorldVectorFace extends WorldVector {
     /**
      * Get the face.
      *
-     * @return
+     * @return the face
      */
     public VectorFace getFace() {
         return face;
@@ -105,7 +65,7 @@ public class WorldVectorFace extends WorldVector {
     /**
      * Get the WorldVector adjacent to this WorldVectorFace.
      *
-     * @return
+     * @return the face vector
      */
     public WorldVector getFaceVector() {
         return new WorldVector(getWorld(),
@@ -121,7 +81,7 @@ public class WorldVectorFace extends WorldVector {
      * @param world the world in which the resulting vector should lie
      * @param vector the original vector
      * @param face the direction in which the face should lie
-     * @return
+     * @return a face
      */
     public static WorldVectorFace getWorldVectorFace(LocalWorld world, Vector vector, Vector face) {
         if (vector == null || face == null) return null;

@@ -1,21 +1,21 @@
-// $Id$
 /*
- * WorldEdit
- * Copyright (C) 2010, 2011 sk89q <http://www.sk89q.com> and contributors
+ * WorldEdit, a Minecraft world manipulation toolkit
+ * Copyright (C) sk89q <http://www.sk89q.com>
+ * Copyright (C) WorldEdit team and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package com.sk89q.worldedit.blocks;
 
@@ -23,16 +23,18 @@ import com.sk89q.worldedit.CuboidClipboard.FlipDirection;
 
 /**
  * Block data related classes.
- *
- * @author sk89q
  */
 public final class BlockData {
+
+    private BlockData() {
+    }
+
     /**
      * Rotate a block's data value 90 degrees (north->east->south->west->north);
      * 
-     * @param type
-     * @param data
-     * @return
+     * @param type the type ID of the bock
+     * @param data the data ID of the block
+     * @return the new data value
      */
     public static int rotate90(int type, int data) {
         switch (type) {
@@ -69,7 +71,7 @@ public final class BlockData {
             }
             break;
 
-        case BlockID.WOODEN_STAIRS:
+        case BlockID.OAK_WOOD_STAIRS:
         case BlockID.COBBLESTONE_STAIRS:
         case BlockID.BRICK_STAIRS:
         case BlockID.STONE_BRICK_STAIRS:
@@ -79,6 +81,8 @@ public final class BlockData {
         case BlockID.BIRCH_WOOD_STAIRS:
         case BlockID.JUNGLE_WOOD_STAIRS:
         case BlockID.QUARTZ_STAIRS:
+        case BlockID.ACACIA_STAIRS:
+        case BlockID.DARK_OAK_STAIRS:
             switch (data) {
             case 0: return 2;
             case 1: return 3;
@@ -101,13 +105,24 @@ public final class BlockData {
             case 2: return 4 | thrown;
             case 3: return 2 | thrown;
             case 4: return 1 | thrown;
+            case 5: return 6 | thrown;
+            case 6: return 5 | thrown;
+            case 7: return 0 | thrown;
+            case 0: return 7 | thrown;
             }
             break;
 
         case BlockID.WOODEN_DOOR:
         case BlockID.IRON_DOOR:
+            if ((data & 0x8) != 0) {
+                // door top halves contain no orientation information
+                break;
+            }
+
+            /* FALL-THROUGH */
+
         case BlockID.COCOA_PLANT:
-        case BlockID.TRIPWIRE_HOOK:
+        case BlockID.TRIPWIRE_HOOK: {
             int extra = data & ~0x3;
             int withoutFlags = data & 0x3;
             switch (withoutFlags) {
@@ -117,7 +132,7 @@ public final class BlockData {
             case 3: return 0 | extra;
             }
             break;
-
+        }
         case BlockID.SIGN_POST:
             return (data + 4) % 16;
 
@@ -128,15 +143,17 @@ public final class BlockData {
         case BlockID.BURNING_FURNACE:
         case BlockID.ENDER_CHEST:
         case BlockID.TRAPPED_CHEST:
-        case BlockID.HOPPER:
-            switch (data) {
-            case 2: return 5;
-            case 3: return 4;
-            case 4: return 2;
-            case 5: return 3;
+        case BlockID.HOPPER: {
+            int extra = data & 0x8;
+            int withoutFlags = data & ~0x8;
+            switch (withoutFlags) {
+            case 2: return 5 | extra;
+            case 3: return 4 | extra;
+            case 4: return 2 | extra;
+            case 5: return 3 | extra;
             }
             break;
-
+        }
         case BlockID.DISPENSER:
         case BlockID.DROPPER:
             int dispPower = data & 0x8;
@@ -158,7 +175,9 @@ public final class BlockData {
             }
             break;
 
+        case BlockID.HAY_BLOCK:
         case BlockID.LOG:
+        case BlockID.LOG2:
             if (data >= 4 && data <= 11) data ^= 0xc;
             break;
 
@@ -212,6 +231,17 @@ public final class BlockData {
 
         case BlockID.ANVIL:
             return data ^ 0x1;
+
+        case BlockID.BED:
+            return data & ~0x3 | (data + 1) & 0x3;
+
+        case BlockID.HEAD:
+            switch (data) {
+                case 2: return 5;
+                case 3: return 4;
+                case 4: return 2;
+                case 5: return 3;
+            }
         }
 
         return data;
@@ -219,10 +249,10 @@ public final class BlockData {
 
     /**
      * Rotate a block's data value -90 degrees (north<-east<-south<-west<-north);
-     * 
-     * @param type
-     * @param data
-     * @return
+     *
+     * @param type the type ID of the bock
+     * @param data the data ID of the block
+     * @return the new data value
      */
     public static int rotate90Reverse(int type, int data) {
         // case ([0-9]+): return ([0-9]+) -> case \2: return \1
@@ -262,7 +292,7 @@ public final class BlockData {
             }
             break;
 
-        case BlockID.WOODEN_STAIRS:
+        case BlockID.OAK_WOOD_STAIRS:
         case BlockID.COBBLESTONE_STAIRS:
         case BlockID.BRICK_STAIRS:
         case BlockID.STONE_BRICK_STAIRS:
@@ -272,6 +302,8 @@ public final class BlockData {
         case BlockID.BIRCH_WOOD_STAIRS:
         case BlockID.JUNGLE_WOOD_STAIRS:
         case BlockID.QUARTZ_STAIRS:
+        case BlockID.ACACIA_STAIRS:
+        case BlockID.DARK_OAK_STAIRS:
             switch (data) {
             case 2: return 0;
             case 3: return 1;
@@ -294,13 +326,24 @@ public final class BlockData {
             case 4: return 2 | thrown;
             case 2: return 3 | thrown;
             case 1: return 4 | thrown;
+            case 6: return 5 | thrown;
+            case 5: return 6 | thrown;
+            case 0: return 7 | thrown;
+            case 7: return 0 | thrown;
             }
             break;
 
         case BlockID.WOODEN_DOOR:
         case BlockID.IRON_DOOR:
+            if ((data & 0x8) != 0) {
+                // door top halves contain no orientation information
+                break;
+            }
+
+            /* FALL-THROUGH */
+
         case BlockID.COCOA_PLANT:
-        case BlockID.TRIPWIRE_HOOK:
+        case BlockID.TRIPWIRE_HOOK: {
             int extra = data & ~0x3;
             int withoutFlags = data & 0x3;
             switch (withoutFlags) {
@@ -310,7 +353,7 @@ public final class BlockData {
             case 0: return 3 | extra;
             }
             break;
-
+        }
         case BlockID.SIGN_POST:
             return (data + 12) % 16;
 
@@ -321,15 +364,17 @@ public final class BlockData {
         case BlockID.BURNING_FURNACE:
         case BlockID.ENDER_CHEST:
         case BlockID.TRAPPED_CHEST:
-        case BlockID.HOPPER:
-            switch (data) {
-            case 5: return 2;
-            case 4: return 3;
-            case 2: return 4;
-            case 3: return 5;
+        case BlockID.HOPPER: {
+            int extra = data & 0x8;
+            int withoutFlags = data & ~0x8;
+            switch (withoutFlags) {
+                case 5: return 2 | extra;
+                case 4: return 3 | extra;
+                case 2: return 4 | extra;
+                case 3: return 5 | extra;
             }
             break;
-
+        }
         case BlockID.DISPENSER:
         case BlockID.DROPPER:
             int dispPower = data & 0x8;
@@ -350,7 +395,9 @@ public final class BlockData {
             }
             break;
 
+        case BlockID.HAY_BLOCK:
         case BlockID.LOG:
+        case BlockID.LOG2:
             if (data >= 4 && data <= 11) data ^= 0xc;
             break;
 
@@ -404,6 +451,16 @@ public final class BlockData {
         case BlockID.ANVIL:
             return data ^ 0x1;
 
+        case BlockID.BED:
+            return data & ~0x3 | (data - 1) & 0x3;
+
+        case BlockID.HEAD:
+            switch (data) {
+                case 2: return 4;
+                case 3: return 5;
+                case 4: return 3;
+                case 5: return 2;
+            }
         }
 
         return data;
@@ -411,10 +468,10 @@ public final class BlockData {
 
     /**
      * Flip a block's data value.
-     * 
-     * @param type
-     * @param data
-     * @return
+     *
+     * @param type the type ID of the bock
+     * @param data the data ID of the block
+     * @return the new data value
      */
     public static int flip(int type, int data) {
         return rotate90(type, rotate90(type, data));
@@ -422,11 +479,11 @@ public final class BlockData {
 
     /**
      * Flip a block's data value.
-     * 
-     * @param type
-     * @param data
-     * @param direction
-     * @return
+     *
+     * @param type the type ID of the bock
+     * @param data the data ID of the block
+     * @param direction the direction to flip
+     * @return the new data value
      */
     public static int flip(int type, int data, FlipDirection direction) {
         int flipX = 0;
@@ -451,7 +508,7 @@ public final class BlockData {
         case BlockID.TORCH:
         case BlockID.REDSTONE_TORCH_OFF:
         case BlockID.REDSTONE_TORCH_ON:
-            if (data > 4) break;
+            if (data < 1 || data > 4) break;
             /* FALL-THROUGH */
 
         case BlockID.LEVER:
@@ -462,6 +519,12 @@ public final class BlockData {
             case 2: return data - flipX;
             case 3: return data + flipZ;
             case 4: return data - flipZ;
+            case 5:
+            case 7:
+                return data ^ flipY << 1;
+            case 6:
+            case 0:
+                return data ^ flipY * 6;
             }
             break;
 
@@ -494,7 +557,7 @@ public final class BlockData {
         case BlockID.WOODEN_STEP:
             return data ^ (flipY << 3);
 
-        case BlockID.WOODEN_STAIRS:
+        case BlockID.OAK_WOOD_STAIRS:
         case BlockID.COBBLESTONE_STAIRS:
         case BlockID.BRICK_STAIRS:
         case BlockID.STONE_BRICK_STAIRS:
@@ -504,6 +567,8 @@ public final class BlockData {
         case BlockID.BIRCH_WOOD_STAIRS:
         case BlockID.JUNGLE_WOOD_STAIRS:
         case BlockID.QUARTZ_STAIRS:
+        case BlockID.ACACIA_STAIRS:
+        case BlockID.DARK_OAK_STAIRS:
             data ^= flipY << 2;
             switch (data) {
             case 0:
@@ -521,7 +586,11 @@ public final class BlockData {
 
         case BlockID.WOODEN_DOOR:
         case BlockID.IRON_DOOR:
-            data ^= flipY << 3;
+            if ((data & 0x8) != 0) {
+                // door top halves contain no orientation information
+                break;
+            }
+
             switch (data & 0x3) {
             case 0: return data + flipX + flipZ * 3;
             case 1: return data - flipX + flipZ;
@@ -548,13 +617,15 @@ public final class BlockData {
         case BlockID.ENDER_CHEST:
         case BlockID.TRAPPED_CHEST:
         case BlockID.HOPPER:
-            switch (data) {
+            int extra = data & 0x8;
+            int withoutFlags = data & ~0x8;
+            switch (withoutFlags) {
             case 2:
             case 3:
-                return data ^ flipZ;
+                return (data ^ flipZ) | extra;
             case 4:
             case 5:
-                return data ^ flipX;
+                return (data ^ flipX) | extra;
             }
             break;
 
@@ -671,13 +742,34 @@ public final class BlockData {
             switch (data & 0x3) {
             case 0:
             case 2:
-                return data ^ flipZ * 2;
+                return data ^ flipZ << 1;
             case 1:
             case 3:
-                return data ^ flipX * 2;
+                return data ^ flipX << 1;
             }
             break;
 
+        case BlockID.BED:
+            switch (data & 0x3) {
+            case 0:
+            case 2:
+                return data ^ flipZ << 1;
+            case 1:
+            case 3:
+                return data ^ flipX << 1;
+            }
+            break;
+
+        case BlockID.HEAD:
+            switch (data) {
+                case 2:
+                case 3:
+                    return data ^ flipZ;
+                case 4:
+                case 5:
+                    return data ^ flipX;
+            }
+            break;
         }
 
         return data;
@@ -703,6 +795,7 @@ public final class BlockData {
 
         // special case here, going to use "forward" for type and "backward" for orientation
         case BlockID.LOG:
+        case BlockID.LOG2:
             if (increment == -1) {
                 store = data & 0x3; // copy bottom (type) bits
                 return mod((data & ~0x3) + 4, 16) | store; // switch orientation with top bits and reapply bottom bits;
@@ -736,7 +829,7 @@ public final class BlockData {
 
         case BlockID.LONG_GRASS:
         case BlockID.SANDSTONE:
-        case BlockID.SILVERFISH_BLOCK:
+        case BlockID.DIRT:
             if (data > 2) return -1;
             return mod((data + increment), 3);
 
@@ -746,7 +839,7 @@ public final class BlockData {
             if (data < 1 || data > 4) return -1;
             return mod((data - 1 + increment), 4) + 1;
 
-        case BlockID.WOODEN_STAIRS:
+        case BlockID.OAK_WOOD_STAIRS:
         case BlockID.COBBLESTONE_STAIRS:
         case BlockID.BRICK_STAIRS:
         case BlockID.STONE_BRICK_STAIRS:
@@ -756,6 +849,8 @@ public final class BlockData {
         case BlockID.BIRCH_WOOD_STAIRS:
         case BlockID.JUNGLE_WOOD_STAIRS:
         case BlockID.QUARTZ_STAIRS:
+        case BlockID.ACACIA_STAIRS:
+        case BlockID.DARK_OAK_STAIRS:
             if (data > 7) return -1;
             return mod((data + increment), 8);
 
@@ -767,14 +862,24 @@ public final class BlockData {
         case BlockID.CAULDRON:
         case BlockID.WOODEN_STEP:
         case BlockID.DOUBLE_WOODEN_STEP:
+        case BlockID.HAY_BLOCK:
             if (data > 3) return -1;
             return mod((data + increment), 4);
 
         case BlockID.STEP:
         case BlockID.DOUBLE_STEP:
         case BlockID.CAKE_BLOCK:
+        case BlockID.PISTON_BASE:
+        case BlockID.PISTON_STICKY_BASE:
+        case BlockID.SILVERFISH_BLOCK:
             if (data > 5) return -1;
             return mod((data + increment), 6);
+
+        case BlockID.DOUBLE_PLANT:
+            store = data & 0x8; // top half flag
+            data &= ~0x8;
+            if (data > 5) return -1;
+            return mod((data + increment), 6) | store;
 
         case BlockID.CROPS:
         case BlockID.PUMPKIN_STEM:
@@ -783,6 +888,7 @@ public final class BlockData {
             return mod((data + increment), 7);
 
         case BlockID.SOIL:
+        case BlockID.RED_FLOWER:
             if (data > 8) return -1;
             return mod((data + increment), 9);
 
@@ -808,8 +914,10 @@ public final class BlockData {
         case BlockID.ENDER_CHEST:
         case BlockID.TRAPPED_CHEST:
         case BlockID.HOPPER:
-            if (data < 2 || data > 5) return -1;
-            return mod((data - 2 + increment), 4) + 2;
+            int extra = data & 0x8;
+            int withoutFlags = data & ~0x8;
+            if (withoutFlags < 2 || withoutFlags > 5) return -1;
+            return (mod((withoutFlags - 2 + increment), 4) + 2) | extra;
 
         case BlockID.DISPENSER:
         case BlockID.DROPPER:
@@ -825,6 +933,7 @@ public final class BlockData {
         case BlockID.TRAP_DOOR:
         case BlockID.FENCE_GATE:
         case BlockID.LEAVES:
+        case BlockID.LEAVES2:
             if (data > 7) return -1;
             store = data & ~0x3;
             return mod(((data & 0x3) + increment), 4) | store;
@@ -838,7 +947,15 @@ public final class BlockData {
             store = data & ~0x3;
             return mod(((data & 0x3) + increment), 3) | store;
 
+        case BlockID.FLOWER_POT:
+            if (data > 13) return -1;
+            return mod((data + increment), 14);
+
         case BlockID.CLOTH:
+        case BlockID.STAINED_CLAY:
+        case BlockID.CARPET:
+        case BlockID.STAINED_GLASS:
+        case BlockID.STAINED_GLASS_PANE:
             if (increment == 1) {
                 data = nextClothColor(data);
             } else if (increment == -1) {
@@ -852,18 +969,11 @@ public final class BlockData {
     }
 
     /**
-     * Better modulo, not just remainder.
-     */
-    private static int mod(int x, int y) {
-        int res = x % y;
-        return res < 0 ? res + y : res;
-    }
-
-    /**
      * Returns the data value for the next color of cloth in the rainbow. This
      * should not be used if you want to just increment the data value.
-     * @param data
-     * @return
+     *
+     * @param data the data value
+     * @return the next data value
      */
     public static int nextClothColor(int data) {
         switch (data) {
@@ -891,8 +1001,9 @@ public final class BlockData {
     /**
      * Returns the data value for the previous ext color of cloth in the rainbow.
      * This should not be used if you want to just increment the data value.
-     * @param data
-     * @return
+     *
+     * @param data the data value
+     * @return the new data value
      */
     public static int prevClothColor(int data) {
         switch (data) {
@@ -916,4 +1027,13 @@ public final class BlockData {
 
         return ClothColor.ID.WHITE;
     }
+
+    /**
+     * Better modulo, not just remainder.
+     */
+    private static int mod(int x, int y) {
+        int res = x % y;
+        return res < 0 ? res + y : res;
+    }
+
 }

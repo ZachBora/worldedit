@@ -1,33 +1,37 @@
-// $Id$
 /*
- * WorldEdit
- * Copyright (C) 2010 sk89q <http://www.sk89q.com> and contributors
+ * WorldEdit, a Minecraft world manipulation toolkit
+ * Copyright (C) sk89q <http://www.sk89q.com>
+ * Copyright (C) WorldEdit team and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package com.sk89q.minecraft.util.commands;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.junit.Assert.*;
 
 public class CommandContextTest {
+
+    private static final Logger log = Logger.getLogger(CommandContextTest.class.getCanonicalName());
     private static final String firstCmdString = "herpderp -opw testers \"mani world\" 'another thing'  because something";
     CommandContext firstCommand;
 
@@ -36,7 +40,7 @@ public class CommandContextTest {
         try {
             firstCommand = new CommandContext(firstCmdString, new HashSet<Character>(Arrays.asList('o', 'w')));
         } catch (CommandException e) {
-            e.printStackTrace();
+            log.log(Level.WARNING, "Error", e);
             fail("Unexpected exception when creating CommandContext");
         }
     }
@@ -75,7 +79,7 @@ public class CommandContextTest {
             new CommandContext(cmd);
             new CommandContext(cmd2);
         } catch (CommandException e) {
-            e.printStackTrace();
+            log.log(Level.WARNING, "Error", e);
             fail("Error creating CommandContext");
         }
     }
@@ -86,7 +90,7 @@ public class CommandContextTest {
         try {
             new CommandContext(cmd);
         } catch (CommandException e) {
-            e.printStackTrace();
+            log.log(Level.WARNING, "Error", e);
             fail("Error creating CommandContext");
         }
     }
@@ -97,7 +101,7 @@ public class CommandContextTest {
         try {
             new CommandContext(cmd);
         } catch (CommandException e) {
-            e.printStackTrace();
+            log.log(Level.WARNING, "Error", e);
             fail("Error creating CommandContext");
         }
     }
@@ -111,7 +115,7 @@ public class CommandContextTest {
             CommandContext context2 = new CommandContext("r hello -f world");
             assertTrue(context2.hasFlag('f'));
         } catch (CommandException e) {
-            e.printStackTrace();
+            log.log(Level.WARNING, "Error", e);
             fail("Error creating CommandContext");
         }
     }
@@ -127,7 +131,7 @@ public class CommandContextTest {
             CommandContext context2 = new CommandContext("pm name \"hello world\"   foo   bar");
             assertEquals("\"hello world\"   foo   bar", context2.getJoinedStrings(1));
         } catch (CommandException e) {
-            e.printStackTrace();
+            log.log(Level.WARNING, "Error", e);
             fail("Error creating CommandContext");
         }
     }
@@ -139,7 +143,7 @@ public class CommandContextTest {
             assertArrayEquals(new String[] { "foo", "bar", "baz" }, context.getSlice(0));
 
         } catch (CommandException e) {
-            e.printStackTrace();
+            log.log(Level.WARNING, "Error", e);
             fail("Error creating CommandContext");
         }
     }
@@ -150,7 +154,7 @@ public class CommandContextTest {
             CommandContext context = new CommandContext("region flag xmas blocked-cmds \"\"");
             assertEquals(context.argsLength(), 3);
         } catch (CommandException e) {
-            e.printStackTrace();
+            log.log(Level.WARNING, "Error", e);
             fail("Error creating CommandContext");
         }
     }

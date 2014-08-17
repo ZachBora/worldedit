@@ -1,34 +1,36 @@
-// $Id$
 /*
- * WorldEdit
- * Copyright (C) 2010 sk89q <http://www.sk89q.com> and contributors
+ * WorldEdit, a Minecraft world manipulation toolkit
+ * Copyright (C) sk89q <http://www.sk89q.com>
+ * Copyright (C) WorldEdit team and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package com.sk89q.worldedit.blocks;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.EnumSet;
 
 /**
- * Cloth colors.
+ * The colors for wool.
  *
- * @author sk89q
+ * <p>This class may be removed in the future.</p>
  */
 public enum ClothColor {
+
     WHITE(ID.WHITE, "White", "white"),
     ORANGE(ID.ORANGE, "Orange", "orange"),
     MAGENTA(ID.MAGENTA, "Magenta", "magenta"),
@@ -63,6 +65,9 @@ public enum ClothColor {
         public static final int DARK_GREEN = 13;
         public static final int RED = 14;
         public static final int BLACK = 15;
+
+        private ID() {
+        }
     }
 
     /**
@@ -91,8 +96,9 @@ public enum ClothColor {
     /**
      * Construct the type.
      *
-     * @param id
-     * @param name
+     * @param id the ID of the color
+     * @param name the name of the color
+     * @param lookupKey a name to refer to the color by
      */
     ClothColor(int id, String name, String lookupKey) {
         this.id = id;
@@ -103,8 +109,9 @@ public enum ClothColor {
     /**
      * Construct the type.
      *
-     * @param id
-     * @param name
+     * @param id the ID of the color
+     * @param name the name of the color
+     * @param lookupKeys an array of lookup keys
      */
     ClothColor(int id, String name, String[] lookupKeys) {
         this.id = id;
@@ -115,9 +122,10 @@ public enum ClothColor {
     /**
      * Return type from ID. May return null.
      *
-     * @param id
-     * @return
+     * @param id the ID
+     * @return a color or null
      */
+    @Nullable
     public static ClothColor fromID(int id) {
         return ids.get(id);
     }
@@ -125,9 +133,10 @@ public enum ClothColor {
     /**
      * Return type from name. May return null.
      *
-     * @param name
-     * @return
+     * @param name the name of the color
+     * @return a color or null
      */
+    @Nullable
     public static ClothColor lookup(String name) {
         return lookup.get(name.toLowerCase());
     }
@@ -135,7 +144,7 @@ public enum ClothColor {
     /**
      * Get item numeric ID.
      *
-     * @return
+     * @return the ID
      */
     public int getID() {
         return id;
@@ -144,9 +153,10 @@ public enum ClothColor {
     /**
      * Get user-friendly item name.
      *
-     * @return
+     * @return the name
      */
     public String getName() {
         return name;
     }
+
 }

@@ -1,43 +1,43 @@
-// $Id$
 /*
- * WorldEdit
- * Copyright (C) 2010, 2011 sk89q <http://www.sk89q.com> and contributors
+ * WorldEdit, a Minecraft world manipulation toolkit
+ * Copyright (C) sk89q <http://www.sk89q.com>
+ * Copyright (C) WorldEdit team and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package com.sk89q.worldedit.regions;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldedit.BlockVector2D;
 import com.sk89q.worldedit.LocalWorld;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.Vector2D;
-import com.sk89q.worldedit.data.ChunkStore;
+import com.sk89q.worldedit.regions.iterator.FlatRegion3DIterator;
+import com.sk89q.worldedit.regions.iterator.FlatRegionIterator;
+import com.sk89q.worldedit.world.World;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Represents a 2D polygonal region.
- *
- * @author sk89q
  */
 public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
+
     private List<BlockVector2D> points;
     private Vector2D min;
     private Vector2D max;
@@ -49,28 +49,38 @@ public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
      * Construct the region
      */
     public Polygonal2DRegion() {
-        this((LocalWorld) null);
+        this((World) null);
+    }
+
+    @Deprecated
+    public Polygonal2DRegion(LocalWorld world) {
+        this((World) world);
     }
 
     /**
      * Construct the region.
      *
-     * @param world
+     * @param world the world
      */
-    public Polygonal2DRegion(LocalWorld world) {
+    public Polygonal2DRegion(World world) {
         this(world, Collections.<BlockVector2D>emptyList(), 0, 0);
         hasY = false;
     }
 
+    @Deprecated
+    public Polygonal2DRegion(LocalWorld world, List<BlockVector2D> points, int minY, int maxY) {
+        this((World) world, points, minY, maxY);
+    }
+
     /**
      * Construct the region.
      *
-     * @param world
-     * @param points
-     * @param minY
-     * @param maxY
+     * @param world the world
+     * @param points list of points
+     * @param minY minimum Y
+     * @param maxY maximum Y
      */
-    public Polygonal2DRegion(LocalWorld world, List<BlockVector2D> points, int minY, int maxY) {
+    public Polygonal2DRegion(World world, List<BlockVector2D> points, int minY, int maxY) {
         super(world);
         this.points = new ArrayList<BlockVector2D>(points);
         this.minY = minY;
@@ -79,6 +89,11 @@ public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
         recalculate();
     }
 
+    /**
+     * Make a copy of another region.
+     *
+     * @param region the other region
+     */
     public Polygonal2DRegion(Polygonal2DRegion region) {
         this(region.world, region.points, region.minY, region.maxY);
         hasY = region.hasY;
@@ -87,7 +102,7 @@ public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
     /**
      * Get the list of points.
      *
-     * @return
+     * @return a list of points
      */
     public List<BlockVector2D> getPoints() {
         return Collections.unmodifiableList(points);
@@ -98,7 +113,7 @@ public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
      * called after points have been changed.
      */
     protected void recalculate() {
-        if (points.size() == 0) {
+        if (points.isEmpty()) {
             min = new Vector2D(0, 0);
             minY = 0;
             max = new Vector2D(0, 0);
@@ -135,38 +150,34 @@ public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
     /**
      * Add a point to the list.
      *
-     * @param pt
+     * @param position the position
      */
-    public void addPoint(Vector2D pt) {
-        points.add(pt.toBlockVector2D());
+    public void addPoint(Vector2D position) {
+        points.add(position.toBlockVector2D());
         recalculate();
     }
 
     /**
      * Add a point to the list.
      *
-     * @param pt
+     * @param position the position
      */
-    public void addPoint(BlockVector2D pt) {
-        points.add(pt);
+    public void addPoint(BlockVector2D position) {
+        points.add(position);
         recalculate();
     }
 
     /**
      * Add a point to the list.
      *
-     * @param pt
+     * @param position the position
      */
-    public void addPoint(Vector pt) {
-        points.add(new BlockVector2D(pt.getBlockX(), pt.getBlockZ()));
+    public void addPoint(Vector position) {
+        points.add(new BlockVector2D(position.getBlockX(), position.getBlockZ()));
         recalculate();
     }
 
-    /**
-     * Get the minimum Y.
-     *
-     * @return min y
-     */
+    @Override
     public int getMinimumY() {
         return minY;
     }
@@ -179,7 +190,7 @@ public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
     /**
      * Set the minimum Y.
      *
-     * @param y
+     * @param y the Y
      */
     public void setMinimumY(int y) {
         hasY = true;
@@ -187,11 +198,7 @@ public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
         recalculate();
     }
 
-    /**
-     * Get the maximum Y.
-     *
-     * @return max y
-     */
+    @Override
     public int getMaximumY() {
         return maxY;
     }
@@ -199,7 +206,7 @@ public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
     /**
      * Set the maximum Y.
      *
-     * @param y
+     * @param y the Y
      */
     public void setMaximumY(int y) {
         hasY = true;
@@ -207,29 +214,17 @@ public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
         recalculate();
     }
 
-    /**
-     * Get the lower point of a region.
-     *
-     * @return min. point
-     */
+    @Override
     public Vector getMinimumPoint() {
         return min.toVector(minY);
     }
 
-    /**
-     * Get the upper point of a region.
-     *
-     * @return max. point
-     */
+    @Override
     public Vector getMaximumPoint() {
         return max.toVector(maxY);
     }
 
-    /**
-     * Get the number of blocks in the region.
-     *
-     * @return number of blocks
-     */
+    @Override
     public int getArea() {
         double area = 0;
         int i, j = points.size() - 1;
@@ -244,38 +239,22 @@ public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
                 * (maxY - minY + 1));
     }
 
-    /**
-     * Get X-size.
-     *
-     * @return width
-     */
+    @Override
     public int getWidth() {
         return max.getBlockX() - min.getBlockX() + 1;
     }
 
-    /**
-     * Get Y-size.
-     *
-     * @return height
-     */
+    @Override
     public int getHeight() {
         return maxY - minY + 1;
     }
 
-    /**
-     * Get Z-size.
-     *
-     * @return length
-     */
+    @Override
     public int getLength() {
         return max.getBlockZ() - min.getBlockZ() + 1;
     }
 
-    /**
-     * Expand the region.
-     *
-     * @param changes
-     */
+    @Override
     public void expand(Vector... changes) throws RegionOperationException {
         for (Vector change : changes) {
             if (change.getBlockX() != 0 || change.getBlockZ() != 0) {
@@ -294,11 +273,7 @@ public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
         recalculate();
     }
 
-    /**
-     * Contract the region.
-     *
-     * @param changes
-     */
+    @Override
     public void contract(Vector... changes) throws RegionOperationException {
         for (Vector change : changes) {
             if (change.getBlockX() != 0 || change.getBlockZ() != 0) {
@@ -334,24 +309,21 @@ public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
         recalculate();
     }
 
-    /**
-     * Checks to see if a point is inside this region.
-     */
-    public boolean contains(Vector pt) {
-        return contains(points, minY, maxY, pt);
+    @Override
+    public boolean contains(Vector position) {
+        return contains(points, minY, maxY, position);
     }
 
     /**
      * Checks to see if a point is inside a region.
      *
-     * @param points
-     * @param minY
-     * @param maxY
-     * @param pt
-     * @return
+     * @param points a list of points
+     * @param minY the min Y
+     * @param maxY the max Y
+     * @param pt the position to check
+     * @return true if the given polygon contains the given point
      */
-    public static boolean contains(List<BlockVector2D> points, int minY,
-            int maxY, Vector pt) {
+    public static boolean contains(List<BlockVector2D> points, int minY, int maxY, Vector pt) {
         if (points.size() < 3) {
             return false;
         }
@@ -410,53 +382,9 @@ public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
     }
 
     /**
-     * Get a list of chunks.
-     *
-     * @return
-     */
-    public Set<Vector2D> getChunks() {
-        Set<Vector2D> chunks = new HashSet<Vector2D>();
-
-        Vector min = getMinimumPoint();
-        Vector max = getMaximumPoint();
-
-        for (int x = min.getBlockX(); x <= max.getBlockX(); ++x) {
-            for (int z = min.getBlockZ(); z <= max.getBlockZ(); ++z) {
-                if (contains(new BlockVector(x, minY, z))) { // Not the best
-                    chunks.add(new BlockVector2D(x >> ChunkStore.CHUNK_SHIFTS,
-                            z >> ChunkStore.CHUNK_SHIFTS));
-                }
-            }
-        }
-
-        return chunks;
-    }
-
-    @Override
-    public Set<Vector> getChunkCubes() {
-        Set<Vector> chunks = new HashSet<Vector>();
-
-        Vector min = getMinimumPoint();
-        Vector max = getMaximumPoint();
-
-        for (int x = min.getBlockX(); x <= max.getBlockX(); ++x) {
-            for (int y = min.getBlockY(); y <= max.getBlockY(); ++y) {
-                for (int z = min.getBlockZ(); z <= max.getBlockZ(); ++z) {
-                    if (contains(new BlockVector(x, y, z))) { // Not the best
-                        chunks.add(new BlockVector(x >> ChunkStore.CHUNK_SHIFTS,
-                                y >> ChunkStore.CHUNK_SHIFTS, z >> ChunkStore.CHUNK_SHIFTS));
-                    }
-                }
-            }
-        }
-
-        return chunks;
-    }
-
-    /**
      * Return the number of points.
      *
-     * @return
+     * @return the number of points
      */
     public int size() {
         return points.size();
@@ -465,7 +393,7 @@ public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
     /**
      * Expand the height of the polygon to fit the specified Y.
      *
-     * @param y
+     * @param y the amount to expand
      * @return true if the area was expanded
      */
     public boolean expandY(int y) {
@@ -485,11 +413,6 @@ public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
         return false;
     }
 
-    /**
-     * Get the iterator.
-     *
-     * @return iterator of points inside the region
-     */
     @Override
     public Iterator<BlockVector> iterator() {
         return new FlatRegion3DIterator(this);
@@ -518,16 +441,27 @@ public class Polygonal2DRegion extends AbstractRegion implements FlatRegion {
         Iterator<BlockVector2D> it = pts.iterator();
         while (it.hasNext()) {
             BlockVector2D current = it.next();
-            sb.append("(" + current.getBlockX() + ", " + current.getBlockZ() + ")");
+            sb.append("(").append(current.getBlockX()).append(", ").append(current.getBlockZ()).append(")");
             if (it.hasNext()) sb.append(" - ");
         }
-        sb.append(" * (" + minY + " - " + maxY + ")");
+        sb.append(" * (").append(minY).append(" - ").append(maxY).append(")");
         return sb.toString();
     }
 
+    @Override
     public Polygonal2DRegion clone() {
         Polygonal2DRegion clone = (Polygonal2DRegion) super.clone();
         clone.points = new ArrayList<BlockVector2D>(points);
         return clone; 
     }
+
+    @Override
+    public List<BlockVector2D> polygonize(int maxPoints) {
+        if (maxPoints >= 0 && maxPoints < points.size()) {
+            throw new IllegalArgumentException("Cannot polygonize a this Polygonal2DRegion into the amount of points given.");
+        }
+
+        return points;
+    }
+
 }

@@ -1,35 +1,40 @@
-// $Id$
 /*
- * WorldEdit
- * Copyright (C) 2010 sk89q <http://www.sk89q.com> and contributors
+ * WorldEdit, a Minecraft world manipulation toolkit
+ * Copyright (C) sk89q <http://www.sk89q.com>
+ * Copyright (C) WorldEdit team and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package com.sk89q.worldedit.regions;
 
 import com.sk89q.worldedit.BlockVector;
+import com.sk89q.worldedit.BlockVector2D;
 import com.sk89q.worldedit.LocalWorld;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.Vector2D;
+import com.sk89q.worldedit.world.World;
+
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Set;
 
 /**
- *
- * @author sk89q
+ * Represents a physical shape.
  */
 public interface Region extends Iterable<BlockVector>, Cloneable {
+
     /**
      * Get the lower point of a region.
      *
@@ -100,46 +105,68 @@ public interface Region extends Iterable<BlockVector>, Cloneable {
     /**
      * Shift the region.
      *
-     * @param change
+     * @param change the change
      * @throws RegionOperationException
      */
-    public void shift(Vector multiply) throws RegionOperationException;
+    public void shift(Vector change) throws RegionOperationException;
 
     /**
-     * Returns true based on whether the region contains the point,
+     * Returns true based on whether the region contains the point.
      *
-     * @param pt
-     * @return
+     * @param position the position
+     * @return true if contained
      */
-    public boolean contains(Vector pt);
+    public boolean contains(Vector position);
 
     /**
      * Get a list of chunks.
      *
-     * @return
+     * @return a list of chunk coordinates
      */
     public Set<Vector2D> getChunks();
 
     /**
      * Return a list of 16*16*16 chunks in a region
      *
-     * @return The chunk cubes this region overlaps with
+     * @return the chunk cubes this region overlaps with
      */
     public Set<Vector> getChunkCubes();
 
     /**
-     * Get the world the selection is in
+     * Sets the world that the selection is in.
      *
-     * @return
+     * @return the world, or null
      */
-    public LocalWorld getWorld();
+    @Nullable
+    public World getWorld();
 
     /**
-     * Sets the world the selection is in
+     * Sets the world that the selection is in.
      *
-     * @return
+     * @param world the world, which may be null
      */
-    public void setWorld(LocalWorld world);
+    public void setWorld(@Nullable World world);
 
+    /**
+     * Sets the world that the selection is in.
+     *
+     * @param world the world, which may be null
+     */
+    @Deprecated
+    public void setWorld(@Nullable LocalWorld world);
+
+    /**
+     * Make a clone of the region.
+     *
+     * @return a cloned version
+     */
     public Region clone();
+
+    /**
+     * Polygonizes a cross-section or a 2D projection of the region orthogonal to the Y axis.
+     *
+     * @param maxPoints maximum number of points to generate. -1 for no limit.
+     * @return the points.
+     */
+    public List<BlockVector2D> polygonize(int maxPoints);
 }

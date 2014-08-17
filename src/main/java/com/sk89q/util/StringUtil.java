@@ -1,20 +1,21 @@
-// $Id$
 /*
- * Copyright (C) 2010 sk89q <http://www.sk89q.com> and contributors
+ * WorldEdit, a Minecraft world manipulation toolkit
+ * Copyright (C) sk89q <http://www.sk89q.com>
+ * Copyright (C) WorldEdit team and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package com.sk89q.util;
 
@@ -23,16 +24,18 @@ import java.util.Map;
 
 /**
  * String utilities.
- * 
- * @author sk89q
  */
-public class StringUtil {
+public final class StringUtil {
+
+    private StringUtil() {
+    }
+
     /**
      * Trim a string if it is longer than a certain length.
      *  
-     * @param str
-     * @param len
-     * @return
+     * @param str the stirng
+     * @param len the length to trim to
+     * @return a new string
      */
     public static String trimLength(String str, int len) {
         if (str.length() > len) {
@@ -45,13 +48,12 @@ public class StringUtil {
     /**
      * Join an array of strings into a string.
      * 
-     * @param str
-     * @param delimiter
-     * @param initialIndex
-     * @return
+     * @param str the string array
+     * @param delimiter the delimiter
+     * @param initialIndex the initial index to start form
+     * @return a new string
      */
-    public static String joinString(String[] str, String delimiter,
-            int initialIndex) {
+    public static String joinString(String[] str, String delimiter, int initialIndex) {
         if (str.length == 0) {
             return "";
         }
@@ -65,11 +67,11 @@ public class StringUtil {
     /**
      * Join an array of strings into a string.
      * 
-     * @param str
-     * @param delimiter
-     * @param initialIndex
-     * @param quote 
-     * @return
+     * @param str the string array
+     * @param delimiter the delimiter
+     * @param initialIndex the initial index to start form
+     * @param quote the character to put around each entry
+     * @return a new string
      */
     public static String joinQuotedString(String[] str, String delimiter,
             int initialIndex, String quote) {
@@ -89,9 +91,9 @@ public class StringUtil {
     /**
      * Join an array of strings into a string.
      * 
-     * @param str
-     * @param delimiter
-     * @return
+     * @param str the string array
+     * @param delimiter the delimiter
+     * @return a new string
      */
     public static String joinString(String[] str, String delimiter) {
         return joinString(str, delimiter, 0);
@@ -100,19 +102,18 @@ public class StringUtil {
     /**
      * Join an array of strings into a string.
      * 
-     * @param str
-     * @param delimiter
-     * @param initialIndex
-     * @return
+     * @param str an array of objects
+     * @param delimiter the delimiter
+     * @param initialIndex the initial index to start form
+     * @return a new string
      */
-    public static String joinString(Object[] str, String delimiter,
-            int initialIndex) {
+    public static String joinString(Object[] str, String delimiter, int initialIndex) {
         if (str.length == 0) {
             return "";
         }
         StringBuilder buffer = new StringBuilder(str[initialIndex].toString());
         for (int i = initialIndex + 1; i < str.length; ++i) {
-            buffer.append(delimiter).append(str[i].toString());
+            buffer.append(delimiter).append(str[i]);
         }
         return buffer.toString();
     }
@@ -120,13 +121,12 @@ public class StringUtil {
     /**
      * Join an array of strings into a string.
      * 
-     * @param str
-     * @param delimiter
-     * @param initialIndex
-     * @return
+     * @param str a list of integers
+     * @param delimiter the delimiter
+     * @param initialIndex the initial index to start form
+     * @return a new string
      */
-    public static String joinString(int[] str, String delimiter,
-            int initialIndex) {
+    public static String joinString(int[] str, String delimiter, int initialIndex) {
         if (str.length == 0) {
             return "";
         }
@@ -139,15 +139,14 @@ public class StringUtil {
 
     /**
      * Join an list of strings into a string.
-     * 
-     * @param str
-     * @param delimiter
-     * @param initialIndex
-     * @return
+     *
+     * @param str a list of strings
+     * @param delimiter the delimiter
+     * @param initialIndex the initial index to start form
+     * @return a new string
      */
-    public static String joinString(Collection<?> str, String delimiter,
-            int initialIndex) {
-        if (str.size() == 0) {
+    public static String joinString(Collection<?> str, String delimiter,int initialIndex) {
+        if (str.isEmpty()) {
             return "";
         }
         StringBuilder buffer = new StringBuilder();
@@ -158,7 +157,7 @@ public class StringUtil {
                     buffer.append(delimiter);
                 }
 
-                buffer.append(o.toString());
+                buffer.append(o);
             }
             ++i;
         }
@@ -197,7 +196,7 @@ public class StringUtil {
      * @param s  the first String, must not be null
      * @param t  the second String, must not be null
      * @return result distance
-     * @throws IllegalArgumentException if either String input <code>null</code>
+     * @throws IllegalArgumentException if either String input {@code null}
      */
     public static int getLevenshteinDistance(String s, String t) {
         if (s == null || t == null) {
@@ -233,15 +232,15 @@ public class StringUtil {
             return n;
         }
 
-        int p[] = new int[n + 1]; // 'previous' cost array, horizontally
-        int d[] = new int[n + 1]; // cost array, horizontally
-        int _d[]; // placeholder to assist in swapping p and d
+        int[] p = new int[n + 1]; // 'previous' cost array, horizontally
+        int[] d = new int[n + 1]; // cost array, horizontally
+        int[] _d; // placeholder to assist in swapping p and d
 
         // indexes into strings s and t
         int i; // iterates through s
         int j; // iterates through t
 
-        char t_j; // jth character of t
+        char tj; // jth character of t
 
         int cost; // cost
 
@@ -250,11 +249,11 @@ public class StringUtil {
         }
 
         for (j = 1; j <= m; ++j) {
-            t_j = t.charAt(j - 1);
+            tj = t.charAt(j - 1);
             d[0] = j;
 
             for (i = 1; i <= n; ++i) {
-                cost = s.charAt(i - 1) == t_j ? 0 : 1;
+                cost = s.charAt(i - 1) == tj ? 0 : 1;
                 // minimum of cell to the left+1, to the top+1, diagonally left
                 // and up +cost
                 d[i] = Math.min(Math.min(d[i - 1] + 1, p[i] + 1), p[i - 1]
@@ -284,7 +283,7 @@ public class StringUtil {
             return null;
         }
 
-        int minDist = Integer.MAX_VALUE;
+        int minDist = -1;
 
         for (Map.Entry<String, T> entry : lookup.entrySet()) {
             final String key = entry.getKey();
@@ -294,14 +293,10 @@ public class StringUtil {
 
             int dist = getLevenshteinDistance(key, testName);
 
-            if (dist >= minDist) {
+            if ((dist < minDist || minDist == -1) && dist < 2) {
                 minDist = dist;
                 type = entry.getValue();
             }
-        }
-
-        if (minDist > 1) {
-            return null;
         }
 
         return type;

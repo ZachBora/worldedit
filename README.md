@@ -1,8 +1,8 @@
 ![WorldEdit](http://static.sk89q.com/readme/worldedit.png)
 =========
 
-WorldEdit is an easy-to-use in-game world editor for Minecraft, supporting both single 
-player and multiplayer, that lets you:
+WorldEdit is an easy-to-use in-game world editor for Minecraft, supporting both
+single player and multiplayer, that lets you:
 
 * Change thousands of blocks in an area at once by selecting regions.
 * Use over 100 functions to modify the world or remove problems.
@@ -10,30 +10,27 @@ player and multiplayer, that lets you:
 * Sculpt the world and build mountains with brushes.
 * Fix annoyances such as broken water, missing snow, raging fires, and more.
 
-WorldEdit is open source and is available under the GNU General Public License v3.
+WorldEdit is open source and is available under the GNU Lesser General Public
+License v3.
 
 Compiling
 ---------
 
-The project is written for Java 6 and our build process makes use of [Maven](http://maven.apache.org). Detailed compilation information [can be found on the wiki](http://wiki.sk89q.com/wiki/WorldEdit/Development#Compiling).
-
-Dependencies are automatically handled by Maven.
+See [COMPILING.md](COMPILING.md) for a guide on compiling WorldEdit.
 
 Contributing
 ------------
 
-We happily accept contributions, especially through pull requests on GitHub. Submissions 
-must be licensed under the GNU Lesser General Public License v3.
+We happily accept contributions, especially through pull requests on GitHub.
+Submissions must be licensed under the GNU Lesser General Public License v3.
 
-Please read CONTRIBUTING.md for important guidelines to follow.
-
-We recommend following our [mailing list](https://groups.google.com/d/forum/sk-dev-discuss), especially if you have some big ideas that you want to implement.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for important guidelines to follow.
 
 Links
 -----
 
-* [Mailing list](https://groups.google.com/d/forum/sk-dev-discuss)
+* [Visit our website](http://www.enginehub.org/)
 * [IRC channel](http://skq.me/irc/irc.esper.net/sk89q/) (#sk89q on irc.esper.net)
-* [Issue tracker](http://redmine.sk89q.com)
-* [Continuous integration](http://build.sk89q.com) [![Build Status](https://secure.travis-ci.org/sk89q/worldedit.png)](http://travis-ci.org/sk89q/worldedit)
+* [Issue tracker](http://youtrack.sk89q.com/issues/WORLDEDIT)
+* [Continuous integration](http://builds.enginehub.org) [![Build Status](https://secure.travis-ci.org/sk89q/worldedit.png)](http://travis-ci.org/sk89q/worldedit)
 * [End-user documentation](http://wiki.sk89q.com/wiki/WorldEdit)

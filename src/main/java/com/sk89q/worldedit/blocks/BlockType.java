@@ -1,24 +1,28 @@
-// $Id$
 /*
- * WorldEdit
- * Copyright (C) 2010 sk89q <http://www.sk89q.com> and contributors
+ * WorldEdit, a Minecraft world manipulation toolkit
+ * Copyright (C) sk89q <http://www.sk89q.com>
+ * Copyright (C) WorldEdit team and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package com.sk89q.worldedit.blocks;
 
+import com.sk89q.util.StringUtil;
+import com.sk89q.worldedit.PlayerDirection;
+
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,15 +30,13 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import com.sk89q.util.StringUtil;
-import com.sk89q.worldedit.PlayerDirection;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Block types.
- *
- * @author sk89q
  */
 public enum BlockType {
+
     AIR(BlockID.AIR, "Air", "air"),
     STONE(BlockID.STONE, "Stone", "stone", "rock"),
     GRASS(BlockID.GRASS, "Grass", "grass"),
@@ -88,7 +90,7 @@ public enum BlockType {
     TORCH(BlockID.TORCH, "Torch", "torch", "light", "candle"),
     FIRE(BlockID.FIRE, "Fire", "fire", "flame", "flames"),
     MOB_SPAWNER(BlockID.MOB_SPAWNER, "Mob spawner", "mobspawner", "spawner"),
-    WOODEN_STAIRS(BlockID.WOODEN_STAIRS, "Wooden stairs", "woodstair", "woodstairs", "woodenstair", "woodenstairs"),
+    WOODEN_STAIRS(BlockID.OAK_WOOD_STAIRS, "Wooden stairs", "woodstair", "woodstairs", "woodenstair", "woodenstairs"),
     CHEST(BlockID.CHEST, "Chest", "chest", "storage", "storagechest"),
     REDSTONE_WIRE(BlockID.REDSTONE_WIRE, "Redstone wire", "redstone", "redstoneblock"),
     DIAMOND_ORE(BlockID.DIAMOND_ORE, "Diamond ore", "diamondore"),
@@ -130,7 +132,8 @@ public enum BlockType {
     CAKE(BlockID.CAKE_BLOCK, "Cake", "cake", "cakeblock"),
     REDSTONE_REPEATER_OFF(BlockID.REDSTONE_REPEATER_OFF, "Redstone repeater (off)", "diodeoff", "redstonerepeater", "repeateroff", "delayeroff"),
     REDSTONE_REPEATER_ON(BlockID.REDSTONE_REPEATER_ON, "Redstone repeater (on)", "diodeon", "redstonerepeateron", "repeateron", "delayeron"),
-    LOCKED_CHEST(BlockID.LOCKED_CHEST, "Locked chest", "lockedchest", "steveco", "supplycrate", "valveneedstoworkonep3nottf2kthx"),
+    @Deprecated LOCKED_CHEST(BlockID.LOCKED_CHEST, "thisblockisinvalidusedstainedglassinstead"),
+    STAINED_GLASS(BlockID.STAINED_GLASS, "Stained Glass", "stainedglass"),
     TRAP_DOOR(BlockID.TRAP_DOOR, "Trap door", "trapdoor", "hatch", "floordoor"),
     SILVERFISH_BLOCK(BlockID.SILVERFISH_BLOCK, "Silverfish block", "silverfish", "silver"),
     STONE_BRICK(BlockID.STONE_BRICK, "Stone brick", "stonebrick", "sbrick", "smoothstonebrick"),
@@ -145,7 +148,7 @@ public enum BlockType {
     FENCE_GATE(BlockID.FENCE_GATE, "Fence gate", "fencegate", "gate"),
     BRICK_STAIRS(BlockID.BRICK_STAIRS, "Brick stairs", "brickstairs", "bricksteps"),
     STONE_BRICK_STAIRS(BlockID.STONE_BRICK_STAIRS, "Stone brick stairs", "stonebrickstairs", "smoothstonebrickstairs"),
-    MYCELIUM(BlockID.MYCELIUM, "Mycelium", "fungus", "mycel"),
+    MYCELIUM(BlockID.MYCELIUM, "Mycelium", "mycelium", "fungus", "mycel"),
     LILY_PAD(BlockID.LILY_PAD, "Lily pad", "lilypad", "waterlily"),
     NETHER_BRICK(BlockID.NETHER_BRICK, "Nether brick", "netherbrick"),
     NETHER_BRICK_FENCE(BlockID.NETHER_BRICK_FENCE, "Nether brick fence", "netherbrickfence", "netherfence"),
@@ -177,23 +180,35 @@ public enum BlockType {
     COBBLESTONE_WALL(BlockID.COBBLESTONE_WALL, "Cobblestone wall", "cobblestonewall", "cobblewall"),
     FLOWER_POT(BlockID.FLOWER_POT, "Flower pot", "flowerpot", "plantpot", "pot"),
     CARROTS(BlockID.CARROTS, "Carrots", "carrots", "carrotsplant", "carrotsblock"),
-    POTATOES(BlockID.POTATOES, "Potatoes", "patatoes", "potatoesblock"),
+    POTATOES(BlockID.POTATOES, "Potatoes", "potatoes", "potatoesblock"),
     WOODEN_BUTTON(BlockID.WOODEN_BUTTON, "Wooden button", "woodbutton", "woodenbutton"),
-    HEAD(BlockID.HEAD, "Head", "head", "headmount", "mount"),
+    HEAD(BlockID.HEAD, "Head", "head", "skull"),
     ANVIL(BlockID.ANVIL, "Anvil", "anvil", "blacksmith"),
     TRAPPED_CHEST(BlockID.TRAPPED_CHEST, "Trapped Chest", "trappedchest", "redstonechest"),
     PRESSURE_PLATE_LIGHT(BlockID.PRESSURE_PLATE_LIGHT, "Weighted Pressure Plate (Light)", "lightpressureplate"),
     PRESSURE_PLATE_HEAVY(BlockID.PRESSURE_PLATE_HEAVY, "Weighted Pressure Plate (Heavy)", "heavypressureplate"),
     COMPARATOR_OFF(BlockID.COMPARATOR_OFF, "Redstone Comparator (inactive)", "redstonecomparator", "comparator"),
     COMPARATOR_ON(BlockID.COMPARATOR_ON, "Redstone Comparator (active)", "redstonecomparatoron", "comparatoron"),
-    DAYLIGHT_SENSOR(BlockID.DAYLIGHT_SENSOR, "Daylight Sesnor", "daylightsensor", "lightsensor"),
+    DAYLIGHT_SENSOR(BlockID.DAYLIGHT_SENSOR, "Daylight Sensor", "daylightsensor", "lightsensor", "daylightdetector"),
     REDSTONE_BLOCK(BlockID.REDSTONE_BLOCK, "Block of Redstone", "redstoneblock", "blockofredstone"),
     QUARTZ_ORE(BlockID.QUARTZ_ORE, "Nether Quartz Ore", "quartzore", "netherquartzore"),
     HOPPER(BlockID.HOPPER, "Hopper", "hopper"),
-    QUARTZ_BLOCK(BlockID.QUARTZ_BLOCK, "Block of Quartz", "quartzblock"),
+    QUARTZ_BLOCK(BlockID.QUARTZ_BLOCK, "Block of Quartz", "quartzblock", "quartz"),
     QUARTZ_STAIRS(BlockID.QUARTZ_STAIRS, "Quartz Stairs", "quartzstairs"),
     ACTIVATOR_RAIL(BlockID.ACTIVATOR_RAIL, "Activator Rail", "activatorrail", "tntrail", "activatortrack"),
-    DROPPER(BlockID.DROPPER, "Dropper", "dropper");
+    DROPPER(BlockID.DROPPER, "Dropper", "dropper"),
+    STAINED_CLAY(BlockID.STAINED_CLAY, "Stained Clay", "stainedclay", "stainedhardenedclay"),
+    STAINED_GLASS_PANE(BlockID.STAINED_GLASS_PANE, "Stained Glass Pane", "stainedglasspane"),
+    LEAVES2(BlockID.LEAVES2, "Leaves", "leaves2", "acacialeaves", "darkoakleaves"),
+    LOG2(BlockID.LOG2, "Log", "log2", "acacia", "darkoak"),
+    ACACIA_STAIRS(BlockID.ACACIA_STAIRS, "Acacia Wood Stairs", "acaciawoodstairs", "acaciastairs"),
+    DARK_OAK_STAIRS(BlockID.DARK_OAK_STAIRS, "Dark Oak Wood Stairs", "darkoakwoodstairs", "darkoakstairs"),
+    HAY_BLOCK(BlockID.HAY_BLOCK, "Hay Block", "hayblock", "haybale", "wheatbale"),
+    CARPET(BlockID.CARPET, "Carpet", "carpet"),
+    HARDENED_CLAY(BlockID.HARDENED_CLAY, "Hardened Clay", "hardenedclay", "hardclay"),
+    COAL_BLOCK(BlockID.COAL_BLOCK, "Block of Coal", "coalblock", "blockofcoal"),
+    PACKED_ICE(BlockID.PACKED_ICE, "Packed Ice", "packedice", "hardice"),
+    DOUBLE_PLANT(BlockID.DOUBLE_PLANT, "Large Flowers", "largeflowers", "doubleflowers");
 
     /**
      * Stores a map of the IDs for fast access.
@@ -221,8 +236,9 @@ public enum BlockType {
     /**
      * Construct the type.
      *
-     * @param id
-     * @param name
+     * @param id the ID of the block
+     * @param name the name of the block
+     * @param lookupKey a name to reference the block by
      */
     BlockType(int id, String name, String lookupKey) {
         this.id = id;
@@ -233,8 +249,9 @@ public enum BlockType {
     /**
      * Construct the type.
      *
-     * @param id
-     * @param name
+     * @param id the ID of the block
+     * @param name the name of the block
+     * @param lookupKeys an array of keys to reference the block by
      */
     BlockType(int id, String name, String... lookupKeys) {
         this.id = id;
@@ -245,9 +262,10 @@ public enum BlockType {
     /**
      * Return type from ID. May return null.
      *
-     * @param id
-     * @return
+     * @param id the type ID
+     * @return a block type, otherwise null
      */
+    @Nullable
     public static BlockType fromID(int id) {
         return ids.get(id);
     }
@@ -255,9 +273,10 @@ public enum BlockType {
     /**
      * Return type from name. May return null.
      *
-     * @param name
-     * @return
+     * @param name the name to search
+     * @return a block type or null
      */
+    @Nullable
     public static BlockType lookup(String name) {
         return lookup(name, true);
     }
@@ -265,10 +284,11 @@ public enum BlockType {
     /**
      * Return type from name. May return null.
      *
-     * @param name
-     * @param fuzzy
-     * @return
+     * @param name the name (or ID) of a block
+     * @param fuzzy true to for a fuzzy search on the block name
+     * @return a block type or null
      */
+    @Nullable
     public static BlockType lookup(String name, boolean fuzzy) {
         try {
             return fromID(Integer.parseInt(name));
@@ -277,10 +297,71 @@ public enum BlockType {
         }
     }
 
+    private static final Map<Integer, BaseBlock> itemBlockMapping = new HashMap<Integer, BaseBlock>();
+    private static final Map<Integer, BaseBlock> dataItemBlockMapping = new HashMap<Integer, BaseBlock>();
+    static {
+        for (int data = 0; data < 16; ++data) {
+            dataItemBlockMapping.put(typeDataKey(BlockID.DIRT, data), new BaseBlock(BlockID.DIRT, data));
+            dataItemBlockMapping.put(typeDataKey(BlockID.WOOD, data), new BaseBlock(BlockID.WOOD, data));
+            dataItemBlockMapping.put(typeDataKey(BlockID.SAND, data), new BaseBlock(BlockID.SAND, data));
+            dataItemBlockMapping.put(typeDataKey(BlockID.SANDSTONE, data), new BaseBlock(BlockID.SANDSTONE, data));
+            dataItemBlockMapping.put(typeDataKey(BlockID.LONG_GRASS, data), new BaseBlock(BlockID.LONG_GRASS, data));
+            dataItemBlockMapping.put(typeDataKey(BlockID.CLOTH, data), new BaseBlock(BlockID.CLOTH, data));
+            dataItemBlockMapping.put(typeDataKey(BlockID.SILVERFISH_BLOCK, data), new BaseBlock(BlockID.SILVERFISH_BLOCK, data));
+            dataItemBlockMapping.put(typeDataKey(BlockID.STONE_BRICK, data), new BaseBlock(BlockID.STONE_BRICK, data));
+            dataItemBlockMapping.put(typeDataKey(BlockID.COBBLESTONE_WALL, data), new BaseBlock(BlockID.COBBLESTONE_WALL, data));
+            dataItemBlockMapping.put(typeDataKey(BlockID.STAINED_CLAY, data), new BaseBlock(BlockID.STAINED_CLAY, data));
+            dataItemBlockMapping.put(typeDataKey(BlockID.CARPET, data), new BaseBlock(BlockID.CARPET, data));
+            dataItemBlockMapping.put(typeDataKey(BlockID.RED_FLOWER, data), new BaseBlock(BlockID.RED_FLOWER, data));
+            dataItemBlockMapping.put(typeDataKey(BlockID.DOUBLE_PLANT, data), new BaseBlock(BlockID.DOUBLE_PLANT, data));
+            dataItemBlockMapping.put(typeDataKey(BlockID.STAINED_GLASS, data), new BaseBlock(BlockID.STAINED_GLASS, data));
+        }
+
+        itemBlockMapping.put(ItemID.FLINT_AND_TINDER, new BaseBlock(BlockID.FIRE, -1));
+        itemBlockMapping.put(ItemID.STRING, new BaseBlock(BlockID.TRIPWIRE, -1));
+        itemBlockMapping.put(ItemID.SEEDS, new BaseBlock(BlockID.CROPS, -1));
+        itemBlockMapping.put(ItemID.SIGN, new BaseBlock(BlockID.SIGN_POST, -1));
+        itemBlockMapping.put(ItemID.WOODEN_DOOR_ITEM, new BaseBlock(BlockID.WOODEN_DOOR, -1));
+        itemBlockMapping.put(ItemID.WATER_BUCKET, new BaseBlock(BlockID.STATIONARY_WATER, -1));
+        itemBlockMapping.put(ItemID.LAVA_BUCKET, new BaseBlock(BlockID.STATIONARY_LAVA, -1));
+        itemBlockMapping.put(ItemID.IRON_DOOR_ITEM, new BaseBlock(BlockID.IRON_DOOR, -1));
+        itemBlockMapping.put(ItemID.REDSTONE_DUST, new BaseBlock(BlockID.REDSTONE_WIRE, -1));
+        itemBlockMapping.put(ItemID.SUGAR_CANE_ITEM, new BaseBlock(BlockID.REED, -1));
+        itemBlockMapping.put(ItemID.BED_ITEM, new BaseBlock(BlockID.BED, -1));
+        itemBlockMapping.put(ItemID.REDSTONE_REPEATER, new BaseBlock(BlockID.REDSTONE_REPEATER_OFF, -1));
+        itemBlockMapping.put(ItemID.PUMPKIN_SEEDS, new BaseBlock(BlockID.PUMPKIN_STEM, -1));
+        itemBlockMapping.put(ItemID.MELON_SEEDS, new BaseBlock(BlockID.MELON_STEM, -1));
+        itemBlockMapping.put(ItemID.NETHER_WART_SEED, new BaseBlock(BlockID.NETHER_WART, -1));
+        itemBlockMapping.put(ItemID.BREWING_STAND, new BaseBlock(BlockID.BREWING_STAND, -1));
+        itemBlockMapping.put(ItemID.CAULDRON, new BaseBlock(BlockID.CAULDRON, -1));
+        itemBlockMapping.put(ItemID.FLOWER_POT, new BaseBlock(BlockID.FLOWER_POT, -1));
+        itemBlockMapping.put(ItemID.CARROT, new BaseBlock(BlockID.CARROTS, -1));
+        itemBlockMapping.put(ItemID.POTATO, new BaseBlock(BlockID.POTATOES, -1));
+        itemBlockMapping.put(ItemID.COMPARATOR, new BaseBlock(BlockID.COMPARATOR_OFF, -1));
+    }
+
+    /**
+     * Get the equivalent block for an item.
+     *
+     * @param typeId the type ID of the block
+     * @param data the data valuie of the block
+     * @return a block or null
+     */
+    @Nullable
+    public static BaseBlock getBlockForItem(int typeId, int data) {
+        final BaseBlock block = itemBlockMapping.get(typeId);
+
+        if (block != null) {
+            return block;
+        }
+
+        return dataItemBlockMapping.get(typeDataKey(typeId, data));
+    }
+
     /**
      * Get block numeric ID.
      *
-     * @return
+     * @return the block ID
      */
     public int getID() {
         return id;
@@ -289,7 +370,7 @@ public enum BlockType {
     /**
      * Get user-friendly block name.
      *
-     * @return
+     * @return the block name
      */
     public String getName() {
         return name;
@@ -343,28 +424,32 @@ public enum BlockType {
         shouldPlaceLast.add(BlockID.CARROTS);
         shouldPlaceLast.add(BlockID.POTATOES);
         shouldPlaceLast.add(BlockID.WOODEN_BUTTON);
-        shouldPlaceLast.add(BlockID.HEAD);
+        shouldPlaceLast.add(BlockID.ANVIL); // becomes relevant with asynchronous placement
         shouldPlaceLast.add(BlockID.PRESSURE_PLATE_LIGHT);
         shouldPlaceLast.add(BlockID.PRESSURE_PLATE_HEAVY);
         shouldPlaceLast.add(BlockID.COMPARATOR_OFF);
         shouldPlaceLast.add(BlockID.COMPARATOR_ON);
         shouldPlaceLast.add(BlockID.ACTIVATOR_RAIL);
+        shouldPlaceLast.add(BlockID.CARPET);
+        shouldPlaceLast.add(BlockID.DOUBLE_PLANT);
     }
 
     /**
-     * Checks to see whether a block should be placed last.
+     * Checks to see whether a block should be placed last (when reordering
+     * blocks that are placed).
      *
-     * @param id
-     * @return
+     * @param id the block ID
+     * @return true if the block should be placed last
      */
     public static boolean shouldPlaceLast(int id) {
         return shouldPlaceLast.contains(id);
     }
 
     /**
-     * Checks to see whether this block should be placed last.
+     * Checks to see whether this block should be placed last (when reordering
+     * blocks that are placed)
      *
-     * @return
+     * @return true if the block should be placed last
      */
     public boolean shouldPlaceLast() {
         return shouldPlaceLast.contains(id);
@@ -391,8 +476,8 @@ public enum BlockType {
      *
      * This applies to blocks that can be attached to other blocks that have an attachment.
      *
-     * @param id
-     * @return
+     * @param id the type ID of the block
+     * @return whether the block is in the final queue
      */
     public static boolean shouldPlaceFinal(int id) {
         return shouldPlaceFinal.contains(id);
@@ -430,7 +515,8 @@ public enum BlockType {
         canPassThrough.add(BlockID.REDSTONE_TORCH_OFF);
         canPassThrough.add(BlockID.REDSTONE_TORCH_ON);
         canPassThrough.add(BlockID.STONE_BUTTON);
-        canPassThrough.add(BlockID.SNOW);
+        canPassThrough.add(-16*BlockID.SNOW-0);
+        canPassThrough.add(-16*BlockID.SNOW-8);
         canPassThrough.add(BlockID.REED);
         canPassThrough.add(BlockID.PORTAL);
         canPassThrough.add(BlockID.REDSTONE_REPEATER_OFF);
@@ -442,23 +528,24 @@ public enum BlockType {
         canPassThrough.add(BlockID.END_PORTAL);
         canPassThrough.add(BlockID.TRIPWIRE_HOOK);
         canPassThrough.add(BlockID.TRIPWIRE);
-        canPassThrough.add(BlockID.FLOWER_POT);
         canPassThrough.add(BlockID.CARROTS);
         canPassThrough.add(BlockID.POTATOES);
         canPassThrough.add(BlockID.WOODEN_BUTTON);
-        canPassThrough.add(BlockID.HEAD);
         canPassThrough.add(BlockID.PRESSURE_PLATE_LIGHT);
         canPassThrough.add(BlockID.PRESSURE_PLATE_HEAVY);
         canPassThrough.add(BlockID.COMPARATOR_OFF);
         canPassThrough.add(BlockID.COMPARATOR_ON);
         canPassThrough.add(BlockID.ACTIVATOR_RAIL);
+        canPassThrough.add(BlockID.CARPET);
+        canPassThrough.add(BlockID.DOUBLE_PLANT);
     }
+
 
     /**
      * Checks whether a block can be passed through.
      *
-     * @param id
-     * @return
+     * @param id the ID of the block
+     * @return true if the block can be passed through
      */
     public static boolean canPassThrough(int id) {
         return canPassThrough.contains(id);
@@ -467,7 +554,29 @@ public enum BlockType {
     /**
      * Checks whether a block can be passed through.
      *
-     * @return
+     * @param id the ID of the block
+     * @param data the data value of the block
+     * @return true if the block can be passed through
+     */
+    public static boolean canPassThrough(int id, int data) {
+        return canPassThrough.contains(-16*id-data) || canPassThrough.contains(id);
+    }
+
+    /**
+     * Checks whether a block can be passed through.
+     *
+     * @param block the block
+     * @return true if the block can be passed through
+     */
+    public static boolean canPassThrough(BaseBlock block) {
+        checkNotNull(block);
+        return canPassThrough(block.getId(), block.getData());
+    }
+
+    /**
+     * Checks whether the block type can be passed through.
+     *
+     * @return whether the block can be passed through
      */
     public boolean canPassThrough() {
         return canPassThrough.contains(id);
@@ -481,40 +590,71 @@ public enum BlockType {
         centralTopLimit.put(BlockID.BED, 0.5625);
         centralTopLimit.put(BlockID.BREWING_STAND, 0.875);
         centralTopLimit.put(BlockID.CAKE_BLOCK, 0.4375);
+        for (int data = 6; data < 16; ++data) {
+            centralTopLimit.put(-16*BlockID.CAKE_BLOCK-data, 0.0);
+        }
         centralTopLimit.put(BlockID.CAULDRON, 0.3125);
         centralTopLimit.put(BlockID.COCOA_PLANT, 0.750);
         centralTopLimit.put(BlockID.ENCHANTMENT_TABLE, 0.75);
         for (int data = 0; data < 16; ++data) {
             if ((data & 4) != 0) {
-                centralTopLimit.put(BlockID.END_PORTAL_FRAME, 0.8125);
+                centralTopLimit.put(-16*BlockID.END_PORTAL_FRAME-data, 1.0);
+            } else {
+                centralTopLimit.put(-16*BlockID.END_PORTAL_FRAME-data, 0.8125);
             }
+            centralTopLimit.put(-16*BlockID.HEAD-data, 0.75);
         }
+        // Heads on the floor are lower
+        centralTopLimit.put(-16*BlockID.HEAD-1, 0.5);
+        centralTopLimit.put(-16*BlockID.HEAD-9, 0.5);
         centralTopLimit.put(BlockID.FENCE, 1.5);
-        centralTopLimit.put(BlockID.FENCE_GATE, 1.5);
         for (int data = 0; data < 8; ++data) {
             centralTopLimit.put(-16*BlockID.STEP-data, 0.5);
             centralTopLimit.put(-16*BlockID.WOODEN_STEP-data, 0.5);
+            centralTopLimit.put(-16*BlockID.SNOW-data, 0.125*data);
+            centralTopLimit.put(-16*BlockID.SNOW-(data+8), 0.125*data);
         }
         centralTopLimit.put(BlockID.LILY_PAD, 0.015625);
         centralTopLimit.put(BlockID.REDSTONE_REPEATER_ON, .125);
         centralTopLimit.put(BlockID.REDSTONE_REPEATER_OFF, .125);
-        centralTopLimit.put(BlockID.TRAP_DOOR, 0.1875);
+        for (int data = 0; data < 4; ++data) {
+            centralTopLimit.put(-16*BlockID.TRAP_DOOR-(data+ 0), 0.1875); // closed lower trap doors
+            centralTopLimit.put(-16*BlockID.TRAP_DOOR-(data+ 4), 0.0); // opened lower trap doors
+            centralTopLimit.put(-16*BlockID.TRAP_DOOR-(data+ 8), 1.0); // closed upper trap doors
+            centralTopLimit.put(-16*BlockID.TRAP_DOOR-(data+12), 0.0); // opened upper trap doors
+
+            centralTopLimit.put(-16*BlockID.FENCE_GATE-(data+ 0), 1.5);
+            centralTopLimit.put(-16*BlockID.FENCE_GATE-(data+ 4), 0.0);
+            centralTopLimit.put(-16*BlockID.FENCE_GATE-(data+ 8), 1.5);
+            centralTopLimit.put(-16*BlockID.FENCE_GATE-(data+12), 0.0);
+        }
         centralTopLimit.put(BlockID.SLOW_SAND, 0.875);
+        centralTopLimit.put(BlockID.COBBLESTONE_WALL, 1.5);
+        centralTopLimit.put(BlockID.FLOWER_POT, 0.375);
+        centralTopLimit.put(BlockID.COMPARATOR_OFF, .125);
+        centralTopLimit.put(BlockID.COMPARATOR_ON, .125);
+        centralTopLimit.put(BlockID.DAYLIGHT_SENSOR, 0.375);
+        centralTopLimit.put(BlockID.HOPPER, 0.625);
+
+        // Some default values to be used if no data value is given
+        centralTopLimit.put(BlockID.HEAD, 0.75);
+        centralTopLimit.put(BlockID.TRAP_DOOR, 1.0);
+        centralTopLimit.put(BlockID.FENCE_GATE, 1.5);
     }
 
     /**
      * Returns the y offset a player falls to when falling onto the top of a block at xp+0.5/zp+0.5.
      *
-     * @param id
-     * @param data
-     * @return
+     * @param id the block ID
+     * @param data the block data value
+     * @return the y offset
      */
     public static double centralTopLimit(int id, int data) {
-        if (centralTopLimit.containsKey(id))
-            return centralTopLimit.get(id);
-
         if (centralTopLimit.containsKey(-16*id-data))
             return centralTopLimit.get(-16*id-data);
+
+        if (centralTopLimit.containsKey(id))
+            return centralTopLimit.get(id);
 
         return canPassThrough(id) ? 0 : 1;
     }
@@ -522,7 +662,18 @@ public enum BlockType {
     /**
      * Returns the y offset a player falls to when falling onto the top of a block at xp+0.5/zp+0.5.
      *
-     * @return
+     * @param block the block
+     * @return the y offset
+     */
+    public static double centralTopLimit(BaseBlock block) {
+        checkNotNull(block);
+        return centralTopLimit(block.getId(), block.getData());
+    }
+
+    /**
+     * Returns the y offset a player falls to when falling onto the top of a block at xp+0.5/zp+0.5.
+     *
+     * @return the y offset
      */
     public double centralTopLimit() {
         if (centralTopLimit.containsKey(id))
@@ -536,14 +687,18 @@ public enum BlockType {
      */
     private static final Set<Integer> usesData = new HashSet<Integer>();
     static {
+        usesData.add(BlockID.DIRT);
         usesData.add(BlockID.WOOD);
         usesData.add(BlockID.SAPLING);
         usesData.add(BlockID.WATER);
         usesData.add(BlockID.STATIONARY_WATER);
         usesData.add(BlockID.LAVA);
         usesData.add(BlockID.STATIONARY_LAVA);
+        usesData.add(BlockID.SAND);
         usesData.add(BlockID.LOG);
+        usesData.add(BlockID.LOG2);
         usesData.add(BlockID.LEAVES);
+        usesData.add(BlockID.LEAVES2);
         usesData.add(BlockID.DISPENSER);
         usesData.add(BlockID.SANDSTONE);
         usesData.add(BlockID.BED);
@@ -554,11 +709,12 @@ public enum BlockType {
         usesData.add(BlockID.PISTON_BASE);
         usesData.add(BlockID.PISTON_EXTENSION);
         usesData.add(BlockID.CLOTH);
+        usesData.add(BlockID.RED_FLOWER);
         usesData.add(BlockID.DOUBLE_STEP);
         usesData.add(BlockID.STEP);
         usesData.add(BlockID.TORCH);
         usesData.add(BlockID.FIRE);
-        usesData.add(BlockID.WOODEN_STAIRS);
+        usesData.add(BlockID.OAK_WOOD_STAIRS);
         usesData.add(BlockID.CHEST);
         usesData.add(BlockID.REDSTONE_WIRE);
         usesData.add(BlockID.CROPS);
@@ -600,7 +756,6 @@ public enum BlockType {
         usesData.add(BlockID.STONE_BRICK_STAIRS);
         usesData.add(BlockID.NETHER_BRICK_STAIRS);
         usesData.add(BlockID.NETHER_WART);
-        usesData.add(BlockID.ENCHANTMENT_TABLE);
         usesData.add(BlockID.BREWING_STAND);
         usesData.add(BlockID.CAULDRON);
         usesData.add(BlockID.END_PORTAL_FRAME);
@@ -623,18 +778,25 @@ public enum BlockType {
         usesData.add(BlockID.ANVIL);
         usesData.add(BlockID.PRESSURE_PLATE_LIGHT);
         usesData.add(BlockID.PRESSURE_PLATE_HEAVY);
+        usesData.add(BlockID.COMPARATOR_OFF);
+        usesData.add(BlockID.COMPARATOR_ON);
         usesData.add(BlockID.QUARTZ_BLOCK);
         usesData.add(BlockID.QUARTZ_STAIRS);
         usesData.add(BlockID.ACTIVATOR_RAIL);
         usesData.add(BlockID.DROPPER);
         usesData.add(BlockID.HOPPER);
+        usesData.add(BlockID.STAINED_CLAY);
+        usesData.add(BlockID.STAINED_GLASS_PANE);
+        usesData.add(BlockID.HAY_BLOCK);
+        usesData.add(BlockID.CARPET);
+        usesData.add(BlockID.DOUBLE_PLANT);
     }
 
     /**
      * Returns true if the block uses its data value.
      *
-     * @param id
-     * @return
+     * @param id the type ID
+     * @return true if the block type uses its data value
      */
     public static boolean usesData(int id) {
         return usesData.contains(id);
@@ -643,7 +805,7 @@ public enum BlockType {
     /**
      * Returns true if the block uses its data value.
      *
-     * @return
+     * @return true if this block type uses its data value
      */
     public boolean usesData() {
         return usesData.contains(id);
@@ -668,8 +830,8 @@ public enum BlockType {
     /**
      * Returns true if the block is a container block.
      *
-     * @param id
-     * @return
+     * @param id the block ID
+     * @return true if the block is a container
      */
     public static boolean isContainerBlock(int id) {
         return isContainerBlock.contains(id);
@@ -678,7 +840,7 @@ public enum BlockType {
     /**
      * Returns true if the block is a container block.
      *
-     * @return
+     * @return true if the block is a container block
      */
     public boolean isContainerBlock() {
         return isContainerBlock.contains(id);
@@ -723,19 +885,19 @@ public enum BlockType {
     }
 
     /**
-     * Returns true if a block uses redstone in some way.
+     * Returns true if a block uses Redstone in some way.
      *
-     * @param id
-     * @return
+     * @param id the type ID of the block
+     * @return true if the block uses Redstone
      */
     public static boolean isRedstoneBlock(int id) {
         return isRedstoneBlock.contains(id);
     }
 
     /**
-     * Returns true if a block uses redstone in some way.
+     * Returns true if a block uses Redstone in some way.
      *
-     * @return
+     * @return true if the block uses Redstone
      */
     public boolean isRedstoneBlock() {
         return isRedstoneBlock.contains(id);
@@ -756,21 +918,23 @@ public enum BlockType {
     }
 
     /**
-     * Returns true if a block can transfer redstone.
-     * Made this since isRedstoneBlock was getting big.
+     * Returns true if a block can transfer Redstone.
      *
-     * @param id
-     * @return
+     * <p>This was made since {@link #isRedstoneBlock} was getting big.</p>
+     *
+     * @param id the type ID of the block
+     * @return true if the block can transfer redstone
      */
     public static boolean canTransferRedstone(int id) {
         return canTransferRedstone.contains(id);
     }
 
     /**
-     * Returns true if a block can transfer redstone.
-     * Made this since isRedstoneBlock was getting big.
+     * Returns true if a block can transfer Redstone.
      *
-     * @return
+     * <p>This was made since {@link #isRedstoneBlock} was getting big.</p>
+     *
+     * @return true if the block can transfer redstone
      */
     public boolean canTransferRedstone() {
         return canTransferRedstone.contains(id);
@@ -797,19 +961,19 @@ public enum BlockType {
     }
 
     /**
-     * Yay for convenience methods.
+     * Returns whether the block is a Redstone source.
      *
-     * @param id
-     * @return
+     * @param id the type ID of the block
+     * @return true if the block is a Redstone source
      */
     public static boolean isRedstoneSource(int id) {
         return isRedstoneSource.contains(id);
     }
 
     /**
-     * Yay for convenience methods.
+     * Returns whether the block is a Redstone source.
      *
-     * @return
+     * @return true if the block is a Redstone source
      */
     public boolean isRedstoneSource() {
         return isRedstoneSource.contains(id);
@@ -827,19 +991,19 @@ public enum BlockType {
     }
 
     /**
-     * Checks if the id is that of one of the rail types
+     * Checks if the block is that of one of the rail types.
      *
-     * @param id
-     * @return
+     * @param id the type ID of the block
+     * @return true if the block is a rail block
      */
     public static boolean isRailBlock(int id) {
         return isRailBlock.contains(id);
     }
 
     /**
-     * Checks if the id is that of one of the rail types
+     * Checks if the block is that of one of the rail types
      *
-     * @return
+     * @return true if the block is a rail block
      */
     public boolean isRailBlock() {
         return isRailBlock.contains(id);
@@ -859,9 +1023,11 @@ public enum BlockType {
         isNaturalTerrainBlock.add(BlockID.GRAVEL);
         isNaturalTerrainBlock.add(BlockID.CLAY);
         isNaturalTerrainBlock.add(BlockID.MYCELIUM);
+        isNaturalTerrainBlock.add(BlockID.PACKED_ICE);
+        isNaturalTerrainBlock.add(BlockID.STAINED_CLAY);
 
         // hell
-        isNaturalTerrainBlock.add(BlockID.NETHERSTONE);
+        isNaturalTerrainBlock.add(BlockID.NETHERRACK);
         isNaturalTerrainBlock.add(BlockID.SLOW_SAND);
         isNaturalTerrainBlock.add(BlockID.LIGHTSTONE);
         isNaturalTerrainBlock.add(BlockID.QUARTZ_ORE);
@@ -878,19 +1044,42 @@ public enum BlockType {
     }
 
     /**
-     * Checks if the block type is naturally occuring
+     * Checks if the block type is naturally occurring.
      *
-     * @param id
-     * @return
+     * @param id the type ID of the block
+     * @return true if the block type is naturally occurring
+     * @deprecated Use {@link #isNaturalTerrainBlock(int, int)}
      */
+    @Deprecated
     public static boolean isNaturalTerrainBlock(int id) {
         return isNaturalTerrainBlock.contains(id);
     }
 
     /**
-     * Checks if the block type is naturally occuring
+     * Checks if the block type is naturally occurring
      *
-     * @return
+     * @param id the type ID of the block
+     * @param data data value of the block
+     * @return true if the block type is naturally occurring
+     */
+    public static boolean isNaturalTerrainBlock(int id, int data) {
+        return isNaturalTerrainBlock.contains(-16*id-data) || isNaturalTerrainBlock.contains(id);
+    }
+
+    /**
+     * Checks if the block type is naturally occurring
+     *
+     * @param block the block
+     * @return true if the block type is naturally occurring
+     */
+    public static boolean isNaturalTerrainBlock(BaseBlock block) {
+        return isNaturalTerrainBlock(block.getId(), block.getData());
+    }
+
+    /**
+     * Checks if the block type is naturally occurring
+     *
+     * @return true if the block type is naturally occurring
      */
     public boolean isNaturalTerrainBlock() {
         return isNaturalTerrainBlock.contains(id);
@@ -914,7 +1103,6 @@ public enum BlockType {
         emitsLight.add(BlockID.PORTAL);
         emitsLight.add(BlockID.JACKOLANTERN);
         emitsLight.add(BlockID.REDSTONE_REPEATER_ON);
-        emitsLight.add(BlockID.LOCKED_CHEST);
         emitsLight.add(BlockID.BROWN_MUSHROOM_CAP);
         emitsLight.add(BlockID.RED_MUSHROOM_CAP);
         emitsLight.add(BlockID.END_PORTAL);
@@ -925,10 +1113,10 @@ public enum BlockType {
     }
 
     /**
-     * Checks if the block type emits light
+     * Checks if the block type emits light.
      *
-     * @param id
-     * @return
+     * @param id the type ID of the block
+     * @return true if the block emits light
      */
     public static boolean emitsLight(int id) {
         return emitsLight.contains(id);
@@ -962,7 +1150,7 @@ public enum BlockType {
         isTranslucent.add(BlockID.TORCH);
         isTranslucent.add(BlockID.FIRE);
         isTranslucent.add(BlockID.MOB_SPAWNER);
-        isTranslucent.add(BlockID.WOODEN_STAIRS);
+        isTranslucent.add(BlockID.OAK_WOOD_STAIRS);
         isTranslucent.add(BlockID.CHEST);
         isTranslucent.add(BlockID.REDSTONE_WIRE);
         isTranslucent.add(BlockID.CROPS);
@@ -1029,13 +1217,16 @@ public enum BlockType {
         isTranslucent.add(BlockID.HOPPER);
         isTranslucent.add(BlockID.QUARTZ_STAIRS);
         isTranslucent.add(BlockID.ACTIVATOR_RAIL);
+        isTranslucent.add(BlockID.CARPET);
+        isTranslucent.add(BlockID.STAINED_GLASS_PANE);
+        isTranslucent.add(BlockID.DOUBLE_PLANT);
     }
 
     /**
-     * Checks if the block type lets light through
+     * Checks if the block type lets light through.
      *
-     * @param id
-     * @return
+     * @param id the type ID of the block
+     * @return true if the block type lets light through
      */
     public static boolean isTranslucent(int id) {
         return isTranslucent.contains(id);
@@ -1062,10 +1253,10 @@ public enum BlockType {
 
         nonDataBlockBagItems.put(BlockID.STONE, new BaseItem(BlockID.COBBLESTONE)); // rule 5
         nonDataBlockBagItems.put(BlockID.GRASS, new BaseItem(BlockID.DIRT)); // rule 5
-        addIdentity(BlockID.DIRT); // rule 1
+        addIdentities(BlockID.DIRT, 3); // rule 1
         addIdentity(BlockID.COBBLESTONE); // rule 1
-        addIdentity(BlockID.WOOD); // rule 1
-        addIdentities(BlockID.SAPLING, 3); // rule 1
+        addIdentities(BlockID.WOOD, 6); // rule 1
+        addIdentities(BlockID.SAPLING, 6); // rule 1
         nonDataBlockBagItems.put(BlockID.BEDROCK, doNotDestroy); // exception
         // WATER, rule 6
         // STATIONARY_WATER, rule 6
@@ -1076,7 +1267,7 @@ public enum BlockType {
         addIdentity(BlockID.GOLD_ORE); // rule 1
         addIdentity(BlockID.IRON_ORE); // rule 1
         nonDataBlockBagItems.put(BlockID.COAL_ORE, new BaseItem(ItemID.COAL)); // rule 5
-        addIdentities(BlockID.LOG, 3); // rule 1
+        addIdentities(BlockID.LOG, 4); // rule 1
         addIdentities(BlockID.LEAVES, 4); // rule 1 with shears, otherwise rule 3
         addIdentity(BlockID.SPONGE); // rule 1
         addIdentity(BlockID.GLASS); // rule 3
@@ -1112,7 +1303,7 @@ public enum BlockType {
         addIdentity(BlockID.TORCH); // rule 1
         // FIRE
         // MOB_SPAWNER
-        addIdentity(BlockID.WOODEN_STAIRS); // rule 3
+        addIdentity(BlockID.OAK_WOOD_STAIRS); // rule 1
         addIdentity(BlockID.CHEST); // rule 1
         nonDataBlockBagItems.put(BlockID.REDSTONE_WIRE, new BaseItem(ItemID.REDSTONE_DUST)); // rule 3
         nonDataBlockBagItems.put(BlockID.DIAMOND_ORE, new BaseItem(ItemID.DIAMOND)); // rule 5
@@ -1154,7 +1345,7 @@ public enum BlockType {
         nonDataBlockBagItems.put(BlockID.CAKE_BLOCK, new BaseItem(ItemID.CAKE_ITEM)); // rule 3
         nonDataBlockBagItems.put(BlockID.REDSTONE_REPEATER_OFF, new BaseItem(ItemID.REDSTONE_REPEATER)); // rule 3
         nonDataBlockBagItems.put(BlockID.REDSTONE_REPEATER_ON, new BaseItem(ItemID.REDSTONE_REPEATER)); // rule 3
-        addIdentity(BlockID.LOCKED_CHEST); // ???
+        addIdentities(BlockID.STAINED_GLASS_PANE, 16); // ???
         addIdentity(BlockID.TRAP_DOOR); // rule 1
         nonDataBlockBagItems.put(BlockID.SILVERFISH_BLOCK, doNotDestroy); // exception
         addIdentity(BlockID.STONE_BRICK); // rule 1
@@ -1224,6 +1415,19 @@ public enum BlockType {
         addIdentity(BlockID.ACTIVATOR_RAIL); // rule 1
         addIdentity(BlockID.DROPPER); // rule 1
 
+        addIdentities(BlockID.STAINED_CLAY, 16); // rule 1
+        addIdentity(BlockID.HAY_BLOCK); // rule 1
+        addIdentities(BlockID.CARPET, 16); // rule 1
+        addIdentity(BlockID.HARDENED_CLAY); // rule 1
+        addIdentity(BlockID.COAL_BLOCK); // rule 1
+
+        addIdentities(BlockID.LOG2, 1);
+        addIdentities(BlockID.LEAVES2, 1);
+        addIdentity(BlockID.ACACIA_STAIRS);
+        addIdentity(BlockID.DARK_OAK_STAIRS);
+        addIdentity(BlockID.PACKED_ICE);
+        addIdentities(BlockID.STAINED_GLASS_PANE, 16);
+        addIdentities(BlockID.DOUBLE_PLANT, 6);
     }
 
     /**
@@ -1231,10 +1435,11 @@ public enum BlockType {
      * dropped, a block with a BaseItemStack of type AIR and size 0 will be returned.
      * If the block should not be destroyed (i.e. bedrock), null will be returned.
      *
-     * @param type
-     * @param data
-     * @return
+     * @param type the type of of the block
+     * @param data the data value of the block
+     * @return the item or null
      */
+    @Nullable
     public static BaseItem getBlockBagItem(int type, int data) {
         BaseItem dropped = nonDataBlockBagItems.get(type);
         if (dropped != null) return dropped;
@@ -1267,8 +1472,8 @@ public enum BlockType {
      * dropped, 0 will be returned. If the block should not be destroyed
      * (i.e. bedrock), -1 will be returned.
      *
-     * @param id
-     * @return
+     * @param id the type ID of the block
+     * @return the dropped item
      * @deprecated This function ignores the data value.
      */
     @Deprecated
@@ -1280,11 +1485,26 @@ public enum BlockType {
         return dropped.getType();
     }
 
+    /**
+     * Get the block drop for this type given a data value.
+     *
+     * @param data the data value
+     * @return the item stack
+     */
     public BaseItemStack getBlockDrop(short data) {
         return getBlockDrop(id, data);
     }
 
     private static final Random random = new Random();
+
+    /**
+     * Get the block drop for a block.
+     *
+     * @param id the type ID of the block
+     * @param data the data value
+     * @return an item or null
+     */
+    @Nullable
     public static BaseItemStack getBlockDrop(int id, short data) {
         int store;
         switch (id) {
@@ -1451,9 +1671,15 @@ public enum BlockType {
             return new BaseItemStack(ItemID.NETHER_QUARTZ);
 
         case BlockID.QUARTZ_BLOCK:
-            return new BaseItemStack(BlockID.QUARTZ_BLOCK, (data >= 2 ? 2 : data));
+            return new BaseItemStack(BlockID.QUARTZ_BLOCK, 1, (data >= 2 ? 2 : data));
 
-        case BlockID.WOODEN_STAIRS:
+        case BlockID.LOG:
+            return new BaseItemStack(BlockID.LOG, 1, (short) (data & 0x3)); // strip orientation data
+
+        case BlockID.HAY_BLOCK:
+            return new BaseItemStack(BlockID.HAY_BLOCK); // strip orientation data
+
+        case BlockID.OAK_WOOD_STAIRS:
         case BlockID.COBBLESTONE_STAIRS:
         case BlockID.BRICK_STAIRS:
         case BlockID.STONE_BRICK_STAIRS:
@@ -1470,6 +1696,7 @@ public enum BlockType {
         case BlockID.LAVA:
         case BlockID.STATIONARY_LAVA:
         case BlockID.GLASS:
+        case BlockID.STAINED_GLASS_PANE:
         case BlockID.PISTON_EXTENSION:
         case BlockID.BOOKCASE:
         case BlockID.FIRE:
@@ -1478,7 +1705,6 @@ public enum BlockType {
         case BlockID.ICE:
         case BlockID.PORTAL:
         case BlockID.AIR:
-        case BlockID.LOCKED_CHEST:
         case BlockID.SILVERFISH_BLOCK:
         case BlockID.VINE:
         case BlockID.END_PORTAL:
@@ -1498,11 +1724,9 @@ public enum BlockType {
     private static final Map<Integer, PlayerDirection> nonDataAttachments = new HashMap<Integer, PlayerDirection>();
     static {
         nonDataAttachments.put(BlockID.SAPLING, PlayerDirection.DOWN);
-        nonDataAttachments.put(BlockID.POWERED_RAIL, PlayerDirection.DOWN);
-        nonDataAttachments.put(BlockID.DETECTOR_RAIL, PlayerDirection.DOWN);
         nonDataAttachments.put(BlockID.LONG_GRASS, PlayerDirection.DOWN);
         nonDataAttachments.put(BlockID.DEAD_BUSH, PlayerDirection.DOWN);
-        for (int offset = 0; offset <= 8; offset += 8) {
+        for (int offset = 0; offset < 16; offset += 8) {
             dataAttachments.put(typeDataKey(BlockID.PISTON_EXTENSION, offset + 0), PlayerDirection.UP);
             dataAttachments.put(typeDataKey(BlockID.PISTON_EXTENSION, offset + 1), PlayerDirection.DOWN);
             addCardinals(BlockID.PISTON_EXTENSION, offset + 2, offset + 5, offset + 3, offset + 4);
@@ -1512,7 +1736,8 @@ public enum BlockType {
         nonDataAttachments.put(BlockID.BROWN_MUSHROOM, PlayerDirection.DOWN);
         nonDataAttachments.put(BlockID.RED_MUSHROOM, PlayerDirection.DOWN);
         for (int blockId : new int[] { BlockID.TORCH, BlockID.REDSTONE_TORCH_ON, BlockID.REDSTONE_TORCH_OFF }) {
-            dataAttachments.put(typeDataKey(blockId, 5), PlayerDirection.DOWN);
+            dataAttachments.put(typeDataKey(blockId, 0), PlayerDirection.DOWN);
+            dataAttachments.put(typeDataKey(blockId, 5), PlayerDirection.DOWN); // According to the minecraft wiki, this one is history. Keeping both, for now...
             addCardinals(blockId, 4, 1, 3, 2);
         }
         nonDataAttachments.put(BlockID.REDSTONE_WIRE, PlayerDirection.DOWN);
@@ -1520,18 +1745,19 @@ public enum BlockType {
         nonDataAttachments.put(BlockID.SIGN_POST, PlayerDirection.DOWN);
         nonDataAttachments.put(BlockID.WOODEN_DOOR, PlayerDirection.DOWN);
         addCardinals(BlockID.LADDER, 2, 5, 3, 4);
-        nonDataAttachments.put(BlockID.MINECART_TRACKS, PlayerDirection.DOWN);
         addCardinals(BlockID.WALL_SIGN, 2, 5, 3, 4);
-        for (int offset = 0; offset <= 8; offset += 8) {
+        for (int offset = 0; offset < 16; offset += 8) {
             addCardinals(BlockID.LEVER, offset + 4, offset + 1, offset + 3, offset + 2);
             dataAttachments.put(typeDataKey(BlockID.LEVER, offset + 5), PlayerDirection.DOWN);
             dataAttachments.put(typeDataKey(BlockID.LEVER, offset + 6), PlayerDirection.DOWN);
+            dataAttachments.put(typeDataKey(BlockID.LEVER, offset + 7), PlayerDirection.UP);
+            dataAttachments.put(typeDataKey(BlockID.LEVER, offset + 0), PlayerDirection.UP);
         }
         nonDataAttachments.put(BlockID.STONE_PRESSURE_PLATE, PlayerDirection.DOWN);
         nonDataAttachments.put(BlockID.IRON_DOOR, PlayerDirection.DOWN);
         nonDataAttachments.put(BlockID.WOODEN_PRESSURE_PLATE, PlayerDirection.DOWN);
         // redstone torches: see torches
-        for (int offset = 0; offset <= 8; offset += 8) {
+        for (int offset = 0; offset < 16; offset += 8) {
             addCardinals(BlockID.STONE_BUTTON, offset + 4, offset + 1, offset + 3, offset + 2);
             addCardinals(BlockID.WOODEN_BUTTON, offset + 4, offset + 1, offset + 3, offset + 2);
         }
@@ -1540,7 +1766,7 @@ public enum BlockType {
         nonDataAttachments.put(BlockID.CAKE_BLOCK, PlayerDirection.DOWN);
         nonDataAttachments.put(BlockID.REDSTONE_REPEATER_OFF, PlayerDirection.DOWN);
         nonDataAttachments.put(BlockID.REDSTONE_REPEATER_ON, PlayerDirection.DOWN);
-        for (int offset = 0; offset <= 4; offset += 4) {
+        for (int offset = 0; offset < 16; offset += 4) {
             addCardinals(BlockID.TRAP_DOOR, offset + 0, offset + 3, offset + 1, offset + 2);
         }
         nonDataAttachments.put(BlockID.PUMPKIN_STEM, PlayerDirection.DOWN);
@@ -1549,10 +1775,10 @@ public enum BlockType {
         dataAttachments.put(typeDataKey(BlockID.VINE, 0), PlayerDirection.UP);
         addCardinals(BlockID.VINE, 1, 2, 4, 8);
         nonDataAttachments.put(BlockID.NETHER_WART, PlayerDirection.DOWN);
-        for (int offset = 0; offset <= 4; offset += 4) {
+        for (int offset = 0; offset < 16; offset += 4) {
             addCardinals(BlockID.COCOA_PLANT, offset + 0, offset + 1, offset + 2, offset + 3);
         }
-        for (int offset = 0; offset <= 4; offset += 4) {
+        for (int offset = 0; offset < 16; offset += 4) {
             addCardinals(BlockID.TRIPWIRE_HOOK, offset + 2, offset + 3, offset + 0, offset + 1);
         }
         nonDataAttachments.put(BlockID.TRIPWIRE, PlayerDirection.DOWN);
@@ -1564,15 +1790,25 @@ public enum BlockType {
         nonDataAttachments.put(BlockID.PRESSURE_PLATE_HEAVY, PlayerDirection.DOWN);
         nonDataAttachments.put(BlockID.COMPARATOR_OFF, PlayerDirection.DOWN);
         nonDataAttachments.put(BlockID.COMPARATOR_ON, PlayerDirection.DOWN);
-        nonDataAttachments.put(BlockID.ACTIVATOR_RAIL, PlayerDirection.DOWN);
+        nonDataAttachments.put(BlockID.CARPET, PlayerDirection.DOWN);
+        nonDataAttachments.put(BlockID.DOUBLE_PLANT, PlayerDirection.DOWN);
+
+        // Rails are hardcoded to be attached to the block below them.
+        // In addition to that, let's attach ascending rails to the block they're ascending towards.
+        for (int offset = 0; offset < 16; offset += 8) {
+            addCardinals(BlockID.POWERED_RAIL, offset + 3, offset + 4, offset + 2, offset + 5);
+            addCardinals(BlockID.DETECTOR_RAIL, offset + 3, offset + 4, offset + 2, offset + 5);
+            addCardinals(BlockID.MINECART_TRACKS, offset + 3, offset + 4, offset + 2, offset + 5);
+            addCardinals(BlockID.ACTIVATOR_RAIL, offset + 3, offset + 4, offset + 2, offset + 5);
+        }
     }
 
     /**
      * Returns the direction to the block(B) this block(A) is attached to.
      * Attached means that if block B is destroyed, block A will pop off.
      *
-     * @param type The block id of block A
-     * @param data The data value of block A
+     * @param type the block id of block A
+     * @param data the data value of block A
      * @return direction to block B
      */
     public static PlayerDirection getAttachment(int type, int data) {
@@ -1592,4 +1828,5 @@ public enum BlockType {
         dataAttachments.put(typeDataKey(type, east), PlayerDirection.EAST);
         dataAttachments.put(typeDataKey(type, south), PlayerDirection.SOUTH);
     }
+
 }

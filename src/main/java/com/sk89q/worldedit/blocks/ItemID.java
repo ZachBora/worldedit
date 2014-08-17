@@ -1,30 +1,29 @@
-// $Id$
 /*
- * WorldEdit
- * Copyright (C) 2010 sk89q <http://www.sk89q.com> and contributors
+ * WorldEdit, a Minecraft world manipulation toolkit
+ * Copyright (C) sk89q <http://www.sk89q.com>
+ * Copyright (C) WorldEdit team and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package com.sk89q.worldedit.blocks;
 
 /**
  * List of item IDs.
- *
- * @author sk89q
  */
 public final class ItemID {
+
     public static final int IRON_SHOVEL = 256;
     public static final int IRON_PICK = 257;
     public static final int IRON_AXE = 258;
@@ -178,6 +177,12 @@ public final class ItemID {
     public static final int NETHER_QUARTZ = 406;
     public static final int TNT_MINECART = 407;
     public static final int HOPPER_MINECART = 408;
+    public static final int HORSE_ARMOR_IRON = 417;
+    public static final int HORSE_ARMOR_GOLD = 418;
+    public static final int HORSE_ARMOR_DIAMOND = 419;
+    public static final int LEAD = 420;
+    public static final int NAME_TAG = 421;
+    public static final int COMMAND_BLOCK_MINECART = 422;
 
     @Deprecated public static final int GOLD_RECORD = 2256; // deprecated, but leave it there
     @Deprecated public static final int GREEN_RECORD = 2257; // deprecated, but leave it there
@@ -193,4 +198,8 @@ public final class ItemID {
     public static final int DISC_WARD = 2265;
     public static final int DISC_11 = 2266;
     public static final int DISC_WAIT = 2267;
+
+    private ItemID() {
+    }
+
 }

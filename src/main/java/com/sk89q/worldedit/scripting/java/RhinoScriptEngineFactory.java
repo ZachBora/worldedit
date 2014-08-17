@@ -1,19 +1,19 @@
-// $Id$
 /*
- * WorldEdit
- * Copyright (C) 2010 sk89q <http://www.sk89q.com> and contributors
+ * WorldEdit, a Minecraft world manipulation toolkit
+ * Copyright (C) sk89q <http://www.sk89q.com>
+ * Copyright (C) WorldEdit team and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
@@ -52,26 +52,32 @@ public class RhinoScriptEngineFactory implements ScriptEngineFactory {
         extensions = Collections.unmodifiableList(extensions);
     }
 
+    @Override
     public String getEngineName() {
         return "Rhino JavaScript Engine (SK)";
     }
 
+    @Override
     public String getEngineVersion() {
         return "unknown";
     }
 
+    @Override
     public List<String> getExtensions() {
         return extensions;
     }
 
+    @Override
     public String getLanguageName() {
         return "EMCAScript";
     }
 
+    @Override
     public String getLanguageVersion() {
         return "1.8";
     }
 
+    @Override
     public String getMethodCallSyntax(String obj, String m, String... args) {
         StringBuilder s = new StringBuilder();
         s.append(obj);
@@ -91,20 +97,24 @@ public class RhinoScriptEngineFactory implements ScriptEngineFactory {
         return s.toString();
     }
 
+    @Override
     public List<String> getMimeTypes() {
         return mimeTypes;
     }
 
+    @Override
     public List<String> getNames() {
         return names;
     }
 
+    @Override
     public String getOutputStatement(String str) {
         return "print(" + str.replace("\\", "\\\\")
                 .replace("\"", "\\\\\"")
                 .replace(";", "\\\\;") + ")";
     }
 
+    @Override
     public Object getParameter(String key) {
         if (key.equals(ScriptEngine.ENGINE)) {
             return getEngineName();
@@ -123,6 +133,7 @@ public class RhinoScriptEngineFactory implements ScriptEngineFactory {
         }
     }
 
+    @Override
     public String getProgram(String... statements) {
         StringBuilder s = new StringBuilder();
         for (String stmt : statements) {
@@ -132,6 +143,7 @@ public class RhinoScriptEngineFactory implements ScriptEngineFactory {
         return s.toString();
     }
 
+    @Override
     public ScriptEngine getScriptEngine() {
         return new RhinoScriptEngine();
     }
